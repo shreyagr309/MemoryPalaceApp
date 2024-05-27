@@ -76,9 +76,7 @@ public class HistoryItems
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
-
     public HistoryItems(){
 
     }
-
 }

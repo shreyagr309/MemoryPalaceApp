@@ -15,8 +15,8 @@ public interface HistoryItemsDAO {
     void insert(HistoryItems historyItems);
     @Delete
     void delete(HistoryItems historyItems);
-    @Update
-    void update(HistoryItems historyItems);
+//    @Update
+//    void update(HistoryItems historyItems);
     //Used Live Data, for showing the underlying changes to the UI.
     @Query("SELECT nameof_items from history_items")
     LiveData<List<String>> getAllNames();
@@ -59,7 +59,7 @@ public interface HistoryItemsDAO {
     @Query("UPDATE history_items set dateof_item=:date where unique_id_history_items=:id")
     void  updateDate(Date date, int id);
     @Query("UPDATE history_items set timeStamp=:timeStamp where unique_id_history_items=:id")
-    void  updateTimeStamp(Long timeStamp,int id);
+    void  updateTimeStamp(long timeStamp,int id);
     // Queries for deleting the items
     @Query("DELETE FROM history_items where unique_id_history_items=:id")
     void deleteItem(int id);
