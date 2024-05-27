@@ -8,7 +8,7 @@ import androidx.room.Update;
 
 import java.util.Date;
 import java.util.List;
-//By using annotation, @DAO, we can perform database operations(CRUD) inside this class
+//By using annotation, @DAO, we can perform database operations(CRUD) inside this Interface
 @Dao
 public interface HistoryItemsDAO {
     @Insert
@@ -17,6 +17,7 @@ public interface HistoryItemsDAO {
     void delete(HistoryItems historyItems);
     @Update
     void update(HistoryItems historyItems);
+    //Used Live Data, for showing the underlying changes to the UI.
     @Query("SELECT nameof_items from history_items")
     LiveData<List<String>> getAllNames();
     //We can use @Query, for writing own custom SQL queries
