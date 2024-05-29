@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp;
+package com.example.memorypalaceapp.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

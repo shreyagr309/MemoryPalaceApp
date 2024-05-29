@@ -1,14 +1,12 @@
-package com.example.memorypalaceapp;
+package com.example.memorypalaceapp.model;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.AutoMigrationSpec;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
+
 
 // By using @Database, we declare this class as the Room Database class which will return the instance of the database.
 // It contains the database holder and serves as the main access point for the underlying connection to app's persisted, relational data.

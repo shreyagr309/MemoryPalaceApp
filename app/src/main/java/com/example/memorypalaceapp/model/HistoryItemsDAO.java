@@ -1,12 +1,10 @@
-package com.example.memorypalaceapp;
+package com.example.memorypalaceapp.model;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import java.util.Date;
 import java.util.List;
 //By using annotation, @DAO, we can perform database operations(CRUD) inside this Interface
 @Dao
@@ -30,10 +28,10 @@ public interface HistoryItemsDAO {
     @Query("SELECT timeStamp from history_items")
     LiveData<List<Long>> getAllTimeStamps();
     @Query("SELECT dateof_item from history_items")
-    LiveData<List<Date>> getAllDates();
+    LiveData<List<String>> getAllDates();
     //Query for getting all the history items.
     @Query("SELECT * from history_items")
-    LiveData<List<String>> getAllHistoryItems();
+    LiveData<List<HistoryItems>> getAllHistoryItems();
     //Queries for Getting the data by the unique id's
     @Query("SELECT nameof_items from history_items where unique_id_history_items= :id")
     LiveData<String> getName(int id);
@@ -44,7 +42,7 @@ public interface HistoryItemsDAO {
     @Query("SELECT urlof_image from history_items where unique_id_history_items= :id")
     LiveData<String> getUrlOfImageFile(int id);
     @Query("SELECT dateof_item from history_items where unique_id_history_items= :id")
-    LiveData<Date> getDate(int id);
+    LiveData<String> getDate(int id);
     @Query("SELECT timeStamp from history_items where unique_id_history_items= :id")
     LiveData<Long> getTimeStamp(int id);
     //Query for updating the items
@@ -57,10 +55,13 @@ public interface HistoryItemsDAO {
     @Query("UPDATE history_items set urlof_audiofile=:audioUrl where unique_id_history_items=:id")
     void  updateAudioUrl(String audioUrl,int id);
     @Query("UPDATE history_items set dateof_item=:date where unique_id_history_items=:id")
-    void  updateDate(Date date, int id);
+    void  updateDate(String date, int id);
     @Query("UPDATE history_items set timeStamp=:timeStamp where unique_id_history_items=:id")
     void  updateTimeStamp(long timeStamp,int id);
     // Queries for deleting the items
     @Query("DELETE FROM history_items where unique_id_history_items=:id")
     void deleteItem(int id);
+
+//    @Insert
+//    void insertName(String name);
 }

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
-}
 
+}
 android {
     namespace = "com.example.memorypalaceapp"
     compileSdk = 34
@@ -15,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -47,10 +46,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:${lifeCycleVersion}")
     implementation("androidx.lifecycle:lifecycle-livedata:${lifeCycleVersion}")
 
+
     val room_version="2.5.2"
 
     implementation("androidx.room:room-runtime:${room_version}")
-    implementation("androidx.room:room-compiler:${room_version}")
+    annotationProcessor("androidx.room:room-compiler:${room_version}")
 
 
 

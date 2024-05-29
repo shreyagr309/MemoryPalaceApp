@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp;
+package com.example.memorypalaceapp.repository;
 
 //This class will provide the clean api, for the data access, to the rest of the app
 // In this class we basically initialize the data sources(Rooms Database in our case) and Dao.
@@ -7,9 +7,11 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.Date;
+import com.example.memorypalaceapp.model.HistoryItems;
+import com.example.memorypalaceapp.model.HistoryItemsDAO;
+import com.example.memorypalaceapp.model.RoomsDatabase;
+
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -83,7 +85,7 @@ public class Repository
     {
         return historyItemsDAO.getAllUrlsOfImageFile();
     }
-    public LiveData<List<Date>> getAllDates()
+    public LiveData<List<String>> getAllDates()
     {
         return historyItemsDAO.getAllDates();
     }
@@ -91,7 +93,7 @@ public class Repository
     {
         return historyItemsDAO.getAllTimeStamps();
     }
-    public LiveData<List<String>> getAllHistoryItems(){
+    public LiveData<List<HistoryItems>> getAllHistoryItems(){
         return historyItemsDAO.getAllHistoryItems();
     }
 
@@ -111,7 +113,7 @@ public class Repository
         return  historyItemsDAO.getUrlOfAudioFile(id);
     }
 
-    public LiveData<Date> getDate(int id){
+    public LiveData<String> getDate(int id){
         return  historyItemsDAO.getDate(id);
     }
     public LiveData<Long> getTimeStamp(int id){
@@ -134,7 +136,7 @@ public class Repository
     {
         historyItemsDAO.updateAudioUrl(audiourl,id);
     }
-    public void updateDate(Date date, int id)
+    public void updateDate(String date, int id)
     {
 
         historyItemsDAO.updateDate(date,id);
