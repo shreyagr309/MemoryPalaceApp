@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp.repository;
+package com.example.memorypalaceapp.model;
 
 //This class will provide the clean api, for the data access, to the rest of the app
 // In this class we basically initialize the data sources(Rooms Database in our case) and Dao.
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Repository
+public class ItemsRepository
 {
     //We also need to create the executor out of Executor Service,
     // for executing the database operations, in the background thread.
@@ -26,7 +26,7 @@ public class Repository
     // Create the constructor to initialize the above variables.
     //inside (), we are passing application, because in order to use the function getInstance(),
     // We need to pass context, and Application is a sub class of context
-    public Repository(Application application)
+    public ItemsRepository(Application application)
     {
         //Get the instance of the database, and initialize the historyItemsDAO
 
