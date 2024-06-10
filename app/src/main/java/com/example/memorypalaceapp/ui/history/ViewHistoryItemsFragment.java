@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentViewHistoryItemsBinding;
@@ -84,5 +86,29 @@ public class ViewHistoryItemsFragment extends Fragment
         recyclerViewAdapter = new RecyclerViewAdapter();
         recyclerViewAdapter.setHistoryItems(historyItemsArrayList);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+            {
+                //What will happen if we swipe left
+                HistoryItems h=historyItemsArrayList.get(viewHolder.getAbsoluteAdapterPosition());
+                roomsViewModel.deleteHistoryItems(h);
+                Toast.makeText(getContext(),"Items deleted",Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        }).attachToRecyclerView(recyclerView);
     }
+
+
+
+
 }
