@@ -7,6 +7,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.model.HistoryItemsDAO;
 import com.example.memorypalaceapp.model.RoomsDatabase;
@@ -85,69 +86,112 @@ public class ItemsRepository
     {
         return historyItemsDAO.getAllUrlsOfImageFile();
     }
-    public LiveData<List<String>> getAllDates()
-    {
-        return historyItemsDAO.getAllDates();
-    }
-    public LiveData<List<Long>> getAllTimeStamps()
-    {
-        return historyItemsDAO.getAllTimeStamps();
-    }
+//    public LiveData<List<String>> getAllDates()
+//    {
+//        return historyItemsDAO.getAllDates();
+//    }
+//    public LiveData<List<Long>> getAllTimeStamps()
+//    {
+//        return historyItemsDAO.getAllTimeStamps();
+//    }
     public LiveData<List<HistoryItems>> getAllHistoryItems(){
         return historyItemsDAO.getAllHistoryItems();
     }
-
-
-    public LiveData<String> getName(int id){
-        return  historyItemsDAO.getName(id);
-    }
-
-    public LiveData<String> getDescription(int id){
-        return  historyItemsDAO.getDescription(id);
-    }
-
-    public LiveData<String> getImageUrl(int id){
-        return  historyItemsDAO.getUrlOfImageFile(id);
-    }
-
-    public LiveData<String> getAudioUrl(int id){
-        return  historyItemsDAO.getUrlOfAudioFile(id);
-    }
-
-    public LiveData<String> getDate(int id){
-        return  historyItemsDAO.getDate(id);
-    }
-    public LiveData<Long> getTimeStamp(int id){
-        return  historyItemsDAO.getTimeStamp(id);
-    }
+//    public LiveData<String> getName(int id){
+//        return  historyItemsDAO.getName(id);
+//    }
+//
+//    public LiveData<String> getDescription(int id){
+//        return  historyItemsDAO.getDescription(id);
+//    }
+//
+//    public LiveData<String> getImageUrl(int id){
+//        return  historyItemsDAO.getUrlOfImageFile(id);
+//    }
+//
+//    public LiveData<String> getAudioUrl(int id){
+//        return  historyItemsDAO.getUrlOfAudioFile(id);
+//    }
+//
+//    public LiveData<String> getDate(int id){
+//        return  historyItemsDAO.getDate(id);
+//    }
+//    public LiveData<Long> getTimeStamp(int id){
+//        return  historyItemsDAO.getTimeStamp(id);
+//    }
 
   public void  updateName(String name,int id)
   {
-      historyItemsDAO.updateName(name,id);
+      executor.execute(new Runnable() {
+          @Override
+          public void run() {
+              historyItemsDAO.updateName(name,id);
+          }
+      });
   }
     public void  updateDescription(String description,int id)
     {
-        historyItemsDAO.updateDescription(description,id);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyItemsDAO.updateDescription(description,id);
+            }
+        });
+
     }
     public void  updateImageUrl(String imageurl,int id)
     {
-        historyItemsDAO.updateImageUrl(imageurl,id);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyItemsDAO.updateImageUrl(imageurl,id);
+            }
+        });
+
     }
     public void  updateAudioUrl(String audiourl ,int id)
     {
-        historyItemsDAO.updateAudioUrl(audiourl,id);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyItemsDAO.updateAudioUrl(audiourl,id);
+            }
+        });
+
     }
     public void updateDate(String date, int id)
     {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyItemsDAO.updateDate(date,id);
+            }
+        });
 
-        historyItemsDAO.updateDate(date,id);
     }
-    public void updateTimeStamp(long timestamp,int id){
+    public void updateTimeStamp(long timestamp,int id)
+    {
 
-        historyItemsDAO.updateTimeStamp(timestamp,id);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyItemsDAO.updateTimeStamp(timestamp,id);
+            }
+        });
+
+
     }
     public void deleteItem(int id)
     {
-        historyItemsDAO.deleteItem(id);
+        executor.execute(new Runnable() {
+            @Override
+            public void run()
+            {
+                historyItemsDAO.deleteItem(id);
+            }
+        });
+
+
     }
+
 }

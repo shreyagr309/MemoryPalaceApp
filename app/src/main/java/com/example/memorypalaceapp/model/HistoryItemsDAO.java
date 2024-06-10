@@ -19,7 +19,6 @@ public interface HistoryItemsDAO {
     @Query("SELECT nameof_items from history_items")
     LiveData<List<String>> getAllNames();
 
-
     //We can use @Query, for writing own custom SQL queries
     @Query("SELECT descriptionof_items from history_items")
     LiveData<List<String>> getAllDescriptions();

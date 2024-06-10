@@ -1,5 +1,7 @@
 package com.example.memorypalaceapp.viewmodel;
 import android.app.Application;
+import android.health.connect.datatypes.StepsCadenceRecord;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -31,6 +33,14 @@ public class RoomsViewModel extends AndroidViewModel
 
      }
 
+     public void updateName(String name, int id)
+     {
+         itemsRepository.updateName(name,id);
 
+     }
+     public void updateDesc(String desc, int id){
+
+        itemsRepository.updateDescription(desc,id);
+     }
 
 }
