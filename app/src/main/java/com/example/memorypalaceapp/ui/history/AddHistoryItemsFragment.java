@@ -37,7 +37,6 @@ public class AddHistoryItemsFragment extends Fragment
         fragmentAddHistoryItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_history_items,
                 container, false);
         View rootView = fragmentAddHistoryItemsBinding.getRoot();
-
         return rootView;
     }
     public void loadImageIntoImageView(Uri uri) {
@@ -49,12 +48,9 @@ public class AddHistoryItemsFragment extends Fragment
                 .override(1000,1000)
                 .into(fragmentAddHistoryItemsBinding.imageView);
     }
-
 //    public void navigateBack() {
 //        requireActivity().getSupportFragmentManager().popBackStackImmediate();
 //    }
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -64,7 +60,6 @@ public class AddHistoryItemsFragment extends Fragment
                 Uri uri = result.getData().getData();
                 if (uri != null)
                 {
-
                     historyItems.setImageUrl(uri.toString());
                     loadImageIntoImageView(uri); // Call method from the click handler
                 }

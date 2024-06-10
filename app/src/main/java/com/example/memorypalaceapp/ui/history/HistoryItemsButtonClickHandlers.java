@@ -111,6 +111,7 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
             Toast.makeText(context, "Items Inserted", Toast.LENGTH_SHORT).show();
             // fragment.onDestroy();
             //fragment.onDestroy();
+
             reset();
         }
     }
@@ -134,10 +135,22 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
 
         private void reset()
         {
+            // Reset the properties of the historyItems object
+            historyItems.setName(null);
+            historyItems.setDescription(null);
+            historyItems.setImageUrl(null);
+            historyItems.setAudioUrl(null);
+            historyItems.setDate(null);
+            historyItems.setTimeStamp(0);
+
+
             fragmentAddHistoryItemsBinding.edtName.setText(null);
             fragmentAddHistoryItemsBinding.edtDescription.setText(null);
             fragmentAddHistoryItemsBinding.imageView.setImageResource(R.drawable.baseline_add_a_photo_24 );
             fragmentAddHistoryItemsBinding.tvSelectedDate.setText(null);
+
+            // Notify the binding about the property changes
+            notifyPropertyChanged(BR.historyItems);
         }
 
 
