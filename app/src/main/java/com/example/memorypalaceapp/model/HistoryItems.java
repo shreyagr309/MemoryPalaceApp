@@ -1,8 +1,19 @@
 package com.example.memorypalaceapp.model;
 
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.bumptech.glide.Glide;
+import com.example.memorypalaceapp.BR;
+
+import java.util.Date;
 
 //Used @Entity annotator to declare this class as Model class.
 @Entity(tableName = "history_items")
@@ -11,13 +22,11 @@ public class HistoryItems
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     //Fields inside this class, will be treated as Columns of the table
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "unique_id_history_items")
    private int id;
     @ColumnInfo(name="descriptionof_items")
@@ -52,11 +61,14 @@ public class HistoryItems
     public void setName(String name) {
         this.name = name;
     }
+
+
     public String getImageUrl() {
         return imageUrl;
     }
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+
     }
     public String getAudioUrl() {
         return audioUrl;
@@ -74,9 +86,10 @@ public class HistoryItems
         return timeStamp;
     }
     public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+        this.timeStamp = timeStamp;//Sets the current time in milliseconds.
     }
     public HistoryItems(){
 
     }
+
 }

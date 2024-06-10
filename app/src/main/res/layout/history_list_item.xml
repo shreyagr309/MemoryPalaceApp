@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="historyitems"
+            type="com.example.memorypalaceapp.model.HistoryItems" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:elevation="20sp"
+        app:cardCornerRadius="20sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_margin="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@{historyitems.name}"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="0sp"
+             android:layout_marginTop="30sp"
+            android:layout_height="wrap_content"
+            android:text="@{historyitems.description}"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewName"/>
+
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@{`Image Taken: `+ historyitems.date}"
+            android:textSize="32sp"
+            android:layout_marginTop="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription"/>
+        <ImageView
+            app:layout_constraintTop_toBottomOf="@+id/textViewDate"
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30sp"
+            bind:loadImage="@{historyitems.imageUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -35,7 +35,8 @@ public abstract class RoomsDatabase extends RoomDatabase// Abstract because Room
                      //Renaming an existing column.
                    // Changing the data type of a column (e.g., from INTEGER to TEXT).
 
-           ).addAutoMigrationSpec(MyMigrationSpec.getinstance())
+           ).fallbackToDestructiveMigration()
+//                   .addAutoMigrationSpec(MyMigrationSpec.getinstance())
                    //.fallbackToDestructiveMigration()
                    //.addMigrations is used for supporting the schema changes
                    // that are not supported by AUTO MIGRATION.

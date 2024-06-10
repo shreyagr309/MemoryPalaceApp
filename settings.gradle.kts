@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+
     }
 }
 dependencyResolutionManagement {
@@ -10,8 +11,15 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenCentral() // For ImagePicker library
+        maven {
+            url= uri("https://jitpack.io")
+        }  // For uCrop library
+
     }
 }
+
+
 
 rootProject.name = "MemoryPalaceApp"
 include(":app")

@@ -97,6 +97,7 @@ public class ItemsRepository
         return historyItemsDAO.getAllHistoryItems();
     }
 
+
     public LiveData<String> getName(int id){
         return  historyItemsDAO.getName(id);
     }

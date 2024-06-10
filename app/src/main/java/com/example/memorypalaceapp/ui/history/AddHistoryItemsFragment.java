@@ -1,66 +1,87 @@
 package com.example.memorypalaceapp.ui.history;
-
+import static android.app.Activity.RESULT_OK;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
+import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
+import com.bumptech.glide.Glide;
 import com.example.memorypalaceapp.R;
+import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
+import com.example.memorypalaceapp.model.HistoryItems;
+import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
+import com.github.drjacky.imagepicker.ImagePicker;
+public class AddHistoryItemsFragment extends Fragment
+{
+    private RoomsViewModel roomsViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddHistoryItemsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AddHistoryItemsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private HistoryItemsButtonClickHandlers historyItemsButtonClickHandlers;
+     private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
+    private HistoryItems historyItems;
+    private ActivityResultLauncher<Intent> launcher;
     public AddHistoryItemsFragment() {
-        // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddHistoryItems.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddHistoryItemsFragment newInstance(String param1, String param2) {
-        AddHistoryItemsFragment fragment = new AddHistoryItemsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        fragmentAddHistoryItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_history_items,
+                container, false);
+        View rootView = fragmentAddHistoryItemsBinding.getRoot();
+
+        return rootView;
+    }
+    public void loadImageIntoImageView(Uri uri) {
+        fragmentAddHistoryItemsBinding.imageView.setBackground(null);
+        Glide.with(fragmentAddHistoryItemsBinding.getRoot().getContext())
+                .load(uri)
+                //.apply(new RequestOptions().circleCrop())
+                //.apply(new RequestOptions().sizeMultiplier(1.0f))
+                .override(1000,1000)
+                .into(fragmentAddHistoryItemsBinding.imageView);
+    }
+
+//    public void navigateBack() {
+//        requireActivity().getSupportFragmentManager().popBackStackImmediate();
+//    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        historyItems = new HistoryItems();
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+            if (result.getResultCode() == RESULT_OK) {
+                Uri uri = result.getData().getData();
+                if (uri != null)
+                {
+
+                    historyItems.setImageUrl(uri.toString());
+                    loadImageIntoImageView(uri); // Call method from the click handler
+                }
+                // Use the uri to load the image
+            } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
+                // Use ImagePicker.Companion.getError(result.getData()) to show an error
+                Toast.makeText(requireContext(),"Error picking image: " + ImagePicker.Companion.getError(result.getData()),Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+        //context = requireActivity();//Get the Host, that is Activity
+        roomsViewModel = new ViewModelProvider(this).get(RoomsViewModel.class);
+        historyItemsButtonClickHandlers = new HistoryItemsButtonClickHandlers(roomsViewModel, historyItems, launcher,requireContext(),fragmentAddHistoryItemsBinding);
+        //Link Data binding with classes
+        fragmentAddHistoryItemsBinding.setHistoryItems(historyItems);
+        fragmentAddHistoryItemsBinding.setHistoryitemclickHandler(historyItemsButtonClickHandlers);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_history_items, container, false);
+        //  return inflater.inflate(R.layout.fragment_add_history_items, container, false);
     }
 }
