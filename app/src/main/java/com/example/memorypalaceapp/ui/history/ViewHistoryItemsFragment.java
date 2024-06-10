@@ -74,12 +74,15 @@ public class ViewHistoryItemsFragment extends Fragment
             @Override
             public void onChanged(List<HistoryItems> historyItems) {
                 historyItemsArrayList.clear();
-                for(HistoryItems hi:historyItems){
-
-                    Log.v("TAGYS",""+hi.getName());
-                    historyItemsArrayList.add(hi);
-                }
+                historyItemsArrayList.addAll(historyItems);
                 recyclerViewAdapter.notifyDataSetChanged();
+
+//                for(HistoryItems hi:historyItems){
+//
+//                    Log.v("TAGYS",""+hi.getName());
+//                    historyItemsArrayList.add(hi);
+//                }
+//                recyclerViewAdapter.notifyDataSetChanged();
             }
         });
         // Initialize the adapter and set it to RecyclerView
@@ -101,9 +104,6 @@ public class ViewHistoryItemsFragment extends Fragment
                 HistoryItems h=historyItemsArrayList.get(viewHolder.getAbsoluteAdapterPosition());
                 roomsViewModel.deleteHistoryItems(h);
                 Toast.makeText(getContext(),"Items deleted",Toast.LENGTH_SHORT).show();
-
-
-
             }
         }).attachToRecyclerView(recyclerView);
     }
