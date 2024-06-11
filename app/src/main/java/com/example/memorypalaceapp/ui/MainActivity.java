@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
@@ -22,8 +23,11 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.ActivityMainBinding;
 import com.example.memorypalaceapp.ui.history.HistoryRoomActivity;
@@ -36,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean historyRoomCreated;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Enable DataBinding
@@ -168,5 +173,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //
 //    );
+
 
 }

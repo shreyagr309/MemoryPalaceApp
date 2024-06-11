@@ -19,7 +19,9 @@ import androidx.databinding.BindingAdapter;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.memorypalaceapp.BR;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
@@ -29,6 +31,7 @@ import com.example.memorypalaceapp.ui.MainActivity;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +44,7 @@ import kotlin.jvm.internal.Intrinsics;
 public class HistoryItemsButtonClickHandlers extends BaseObservable {
     private ActivityResultLauncher<Intent> launcher;
     private ActivityResultLauncher<Intent>launcher1;
+    private  RecyclerViewAdapter recyclerViewAdapter;
     private Context context;
     private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
     private String selectedDate;
@@ -58,6 +62,7 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
     public HistoryItemsButtonClickHandlers(ActivityResultLauncher<Intent>launcher1)
     {
         this.launcher1=launcher1;
+
     }
 
     @Bindable
@@ -115,7 +120,6 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
             Toast.makeText(context, "Items Inserted", Toast.LENGTH_SHORT).show();
             // fragment.onDestroy();
             //fragment.onDestroy();
-
             reset();
         }
     }
@@ -129,7 +133,7 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
             DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    String formattedDate = dayOfMonth + "/" + (month) + "/" + year;
+                    String formattedDate = dayOfMonth + "/" + (month+1) + "/" + year;
                     setSelectedDate(formattedDate);
                     historyItems.setDate(formattedDate);
                 }
@@ -157,23 +161,6 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
             notifyPropertyChanged(BR.historyItems);
         }
 
-
-        // We are accessing this method from XMl, fragment_add_history_items and from fragment_view_history_items.
-    @BindingAdapter("loadImage")
-    public static void loadImage(ImageView imageView, String url)
-    {
-        if (url == null || url.isEmpty()) {
-            Glide.with(imageView.getContext())
-                    .load(R.drawable.baseline_add_a_photo_24) // Default or placeholder image
-                    .into(imageView);
-        }
-        else{
-                Glide.with(imageView.getContext())
-                        .load(url)
-                        .into(imageView);
-            }
-
-    }
 
     public void onImageButtonClickInViewItems(View view) {
         ImagePicker.Companion.with((Activity) view.getContext())

@@ -60,5 +60,6 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     val libVersion= "2.3.22"
     implementation ("com.github.Drjacky:ImagePicker:$libVersion")
+    implementation ("com.squareup.picasso:picasso:2.8")
 
 }

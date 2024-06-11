@@ -83,7 +83,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             this.historyListItemBinding=historyListItemBinding;
             historyListItemBinding.textViewName.setOnClickListener(this);//When you call
             historyListItemBinding.textViewDescription.setOnClickListener(this);
-            historyListItemBinding.imageView.setOnClickListener(this);// historyListItemBinding.getRoot(),
+            historyListItemBinding.imageView.setOnClickListener(this);
+            historyListItemBinding.textViewDate.setOnClickListener(this);                                                        // historyListItemBinding.getRoot(),
                                                                      // it returns the root view of
                                                                      // your item layout,
                                                                       // which is essentially your itemView

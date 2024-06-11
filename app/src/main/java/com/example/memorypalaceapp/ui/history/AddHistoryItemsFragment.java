@@ -35,18 +35,20 @@ public class AddHistoryItemsFragment extends Fragment
                              Bundle savedInstanceState) {
         fragmentAddHistoryItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_history_items,
                 container, false);
+
         View rootView = fragmentAddHistoryItemsBinding.getRoot();
         return rootView;
     }
-    public void loadImageIntoImageView(Uri uri) {
-        fragmentAddHistoryItemsBinding.imageView.setBackground(null);
-        Glide.with(fragmentAddHistoryItemsBinding.getRoot().getContext())
-                .load(uri)
-                //.apply(new RequestOptions().circleCrop())
-                //.apply(new RequestOptions().sizeMultiplier(1.0f))
-                .override(1000,1000)
-                .into(fragmentAddHistoryItemsBinding.imageView);
-    }
+//    public void loadImageIntoImageView(Uri uri)
+//    {
+//            Glide.with(fragmentAddHistoryItemsBinding.getRoot().getContext())
+//                    .load(uri)
+//                    //.apply(new RequestOptions().circleCrop())
+//                    //.apply(new RequestOptions().sizeMultiplier(1.0f))
+//                    .override(1000, 1000)
+//                    .into(fragmentAddHistoryItemsBinding.imageView);
+//
+//    }
 //    public void navigateBack() {
 //        requireActivity().getSupportFragmentManager().popBackStackImmediate();
 //    }
@@ -60,7 +62,8 @@ public class AddHistoryItemsFragment extends Fragment
                 if (uri != null)
                 {
                     historyItems.setImageUrl(uri.toString());
-                    loadImageIntoImageView(uri); // Call method from the click handler
+
+                    //loadImageIntoImageView(uri); // Call method from the click handler
                 }
                 // Use the uri to load the image
             } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
@@ -69,6 +72,7 @@ public class AddHistoryItemsFragment extends Fragment
                 ).show();
             }
         });
+
         //context = requireActivity();//Get the Host, that is Activity
         roomsViewModel = new ViewModelProvider(this).get(RoomsViewModel.class);
         historyItemsButtonClickHandlers = new HistoryItemsButtonClickHandlers(roomsViewModel, historyItems, launcher,requireContext(),fragmentAddHistoryItemsBinding);

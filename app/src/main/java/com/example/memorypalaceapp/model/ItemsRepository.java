@@ -4,6 +4,8 @@ package com.example.memorypalaceapp.model;
 // In this class we basically initialize the data sources(Rooms Database in our case) and Dao.
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
@@ -22,6 +24,7 @@ public class ItemsRepository
     // for executing the database operations, in the background thread.
     private int numberofThreads=4;
     private ExecutorService executor;
+    Handler handler;
     private final HistoryItemsDAO historyItemsDAO;//DAO available
 
     // Create the constructor to initialize the above variables.
@@ -40,6 +43,8 @@ public class ItemsRepository
         // newFixedThreadPool ensures that 4 threads or tasks can run concurrently.
         //this will improve the responsiveness of the app
         executor=Executors.newFixedThreadPool(numberofThreads);//We can not make database operations to run on the main thread
+        handler=new Handler(Looper.getMainLooper());
+
     }
 
     //Create functions for performing the database operations

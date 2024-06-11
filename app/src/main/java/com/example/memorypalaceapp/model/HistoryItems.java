@@ -11,13 +11,17 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.memorypalaceapp.BR;
+import com.example.memorypalaceapp.R;
 
 import java.util.Date;
 
 //Used @Entity annotator to declare this class as Model class.
 @Entity(tableName = "history_items")
-public class HistoryItems
+public class HistoryItems extends BaseObservable
 {
     public int getId() {
         return id;
@@ -63,11 +67,13 @@ public class HistoryItems
     }
 
 
+    @Bindable
     public String getImageUrl() {
         return imageUrl;
     }
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        notifyPropertyChanged(BR.imageUrl);
 
     }
     public String getAudioUrl() {
@@ -76,11 +82,16 @@ public class HistoryItems
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
     }
+
+
     public String getDate() {
         return date;
     }
+
+
     public void setDate(String date) {
         this.date = date;
+
     }
     public long getTimeStamp() {
         return timeStamp;

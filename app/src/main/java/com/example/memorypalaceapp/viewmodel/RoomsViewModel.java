@@ -49,5 +49,10 @@ public class RoomsViewModel extends AndroidViewModel
         itemsRepository.updateImageUrl(url,id);
      }
 
+     public void updateDate(String date, int id){
+
+        itemsRepository.updateDate(date,id);
+     }
+
 
 }

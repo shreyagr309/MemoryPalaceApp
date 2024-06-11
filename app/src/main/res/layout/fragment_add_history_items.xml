@@ -90,9 +90,9 @@
                     android:onClick="@{historyitemclickHandler::onAudioButtonClick}"
                     android:layout_width="100sp"
                     android:layout_height="100sp"
+                    android:src="@drawable/baseline_mic_none_24"
                     android:layout_marginTop="20sp"
                     android:layout_marginStart="150sp"
-                    android:background="@drawable/baseline_mic_none_24"
                     android:contentDescription="Select Audio recording"
                     android:padding="16sp" />
 
