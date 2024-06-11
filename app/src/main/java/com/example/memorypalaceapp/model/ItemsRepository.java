@@ -120,6 +120,7 @@ public class ItemsRepository
 //        return  historyItemsDAO.getTimeStamp(id);
 //    }
 
+    //Done
   public void  updateName(String name,int id)
   {
       executor.execute(new Runnable() {
@@ -129,6 +130,7 @@ public class ItemsRepository
           }
       });
   }
+    //Done
     public void  updateDescription(String description,int id)
     {
         executor.execute(new Runnable() {
@@ -137,17 +139,17 @@ public class ItemsRepository
                 historyItemsDAO.updateDescription(description,id);
             }
         });
-
     }
-    public void  updateImageUrl(String imageurl,int id)
+
+
+    public void  updateImageUrl(String imageUrl,int id)
     {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                historyItemsDAO.updateImageUrl(imageurl,id);
+                historyItemsDAO.updateImageUrl(imageUrl,id);
             }
         });
-
     }
     public void  updateAudioUrl(String audiourl ,int id)
     {

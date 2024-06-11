@@ -40,7 +40,7 @@ import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
 public class HistoryItemsButtonClickHandlers extends BaseObservable {
     private ActivityResultLauncher<Intent> launcher;
-
+    private ActivityResultLauncher<Intent>launcher1;
     private Context context;
     private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
     private String selectedDate;
@@ -54,6 +54,10 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
         this.launcher = launcher;
         this.fragmentAddHistoryItemsBinding=fragmentAddHistoryItemsBinding;
 
+    }
+    public HistoryItemsButtonClickHandlers(ActivityResultLauncher<Intent>launcher1)
+    {
+        this.launcher1=launcher1;
     }
 
     @Bindable
@@ -168,6 +172,29 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
                         .load(url)
                         .into(imageView);
             }
+
+    }
+
+    public void onImageButtonClickInViewItems(View view) {
+        ImagePicker.Companion.with((Activity) view.getContext())
+                .crop()
+                //.cropOval()
+                .cropFreeStyle()
+                .maxResultSize(512, 512, true)
+                .provider(ImageProvider.BOTH) //Or bothCameraGallery()
+                .createIntentFromDialog((Function1) new Function1() {
+                    public Object invoke(Object var1) {
+                        this.invoke((Intent) var1);
+                        return Unit.INSTANCE;
+                    }
+
+                    public final void invoke(@NotNull Intent it) {
+                        Intrinsics.checkNotNullParameter(it, "it");
+                        launcher1.launch(it);
+                    }
+                });
+
+
     }
 
 }

@@ -1,12 +1,18 @@
 package com.example.memorypalaceapp.ui.history;
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.HistoryListItemBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
@@ -15,6 +21,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 {
     //Data Source
 
+    private ActivityResultLauncher<Intent> launcher;
     private ItemClickListener itemClickListener;
     ArrayList<HistoryItems> historyItems;
     private HistoryListItemBinding historyListItemBinding;
@@ -49,6 +56,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //Get the current items at their respective position
      HistoryItems currentHistoryItem=historyItems.get(position);
      holder.historyListItemBinding.setHistoryitems(currentHistoryItem);
+
+
      //holder.historyListItemBinding.executePendingBindings();
     }
     @Override
@@ -73,7 +82,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(historyListItemBinding.getRoot());
             this.historyListItemBinding=historyListItemBinding;
             historyListItemBinding.textViewName.setOnClickListener(this);//When you call
-            historyListItemBinding.textViewDescription.setOnClickListener(this);                                                        // historyListItemBinding.getRoot(),
+            historyListItemBinding.textViewDescription.setOnClickListener(this);
+            historyListItemBinding.imageView.setOnClickListener(this);// historyListItemBinding.getRoot(),
                                                                      // it returns the root view of
                                                                      // your item layout,
                                                                       // which is essentially your itemView
@@ -89,4 +99,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         }
     }
+
+
+
+
+
+
 }

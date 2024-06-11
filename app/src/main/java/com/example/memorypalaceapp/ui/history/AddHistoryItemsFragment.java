@@ -24,7 +24,6 @@ import com.github.drjacky.imagepicker.ImagePicker;
 public class AddHistoryItemsFragment extends Fragment
 {
     private RoomsViewModel roomsViewModel;
-
     private HistoryItemsButtonClickHandlers historyItemsButtonClickHandlers;
      private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
     private HistoryItems historyItems;

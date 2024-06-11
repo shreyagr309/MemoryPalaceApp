@@ -43,4 +43,11 @@ public class RoomsViewModel extends AndroidViewModel
         itemsRepository.updateDescription(desc,id);
      }
 
+
+     public void UpdateImageUrl(String url, int id){
+
+        itemsRepository.updateImageUrl(url,id);
+     }
+
+
 }

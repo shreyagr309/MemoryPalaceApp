@@ -6,6 +6,7 @@
         <variable
             name="historyitems"
             type="com.example.memorypalaceapp.model.HistoryItems" />
+
     </data>
     <androidx.cardview.widget.CardView
         android:elevation="20sp"
@@ -55,6 +56,7 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_marginTop="30sp"
+            android:adjustViewBounds="true"
             bind:loadImage="@{historyitems.imageUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

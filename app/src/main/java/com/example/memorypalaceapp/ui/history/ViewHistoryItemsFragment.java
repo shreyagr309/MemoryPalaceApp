@@ -1,9 +1,16 @@
 package com.example.memorypalaceapp.ui.history;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -24,12 +31,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentViewHistoryItemsBinding;
 import com.example.memorypalaceapp.databinding.HistoryListItemBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.model.RoomsDatabase;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
+import com.github.drjacky.imagepicker.ImagePicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +49,11 @@ import java.util.List;
 public class ViewHistoryItemsFragment extends Fragment implements ItemClickListener
 {
 
+    private int currentImageUpdatePosition;
+    private HistoryListItemBinding historyListItemBinding;
+    private HistoryItems historyItems;
+  private ActivityResultLauncher<Intent> launcher1;
+    private HistoryItemsButtonClickHandlers historyItemsButtonClickHandlers;
     private FragmentViewHistoryItemsBinding fragmentViewHistoryItemsBinding;
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
@@ -50,7 +67,10 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
+
+    historyListItemBinding=DataBindingUtil.inflate(inflater,R.layout.history_list_item,container,false);
         // Inflate the layout for this fragment
         fragmentViewHistoryItemsBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_view_history_items
                 ,container,false);
@@ -67,7 +87,26 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         LinearLayoutManager layoutManager=new LinearLayoutManager(view.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        historyItems=new HistoryItems();
+       // historyListItemBinding.setHistoryitems(historyItems);
         //calling the setItemCLickListener method of Recycler View Adapter.
+
+        launcher1=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+            if (result.getResultCode() == RESULT_OK) {
+                Uri uri = result.getData().getData();
+                if (uri != null)
+                {
+                    updateImageUri(uri);
+
+                }
+                // Use the uri to load the image
+            } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
+                // Use ImagePicker.Companion.getError(result.getData()) to show an error
+                Toast.makeText(requireContext(),"Error picking image: " + ImagePicker.Companion.getError(result.getData()),Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+        historyItemsButtonClickHandlers=new HistoryItemsButtonClickHandlers(launcher1);
 
         //Initialize the arrayList
         historyItemsArrayList=new ArrayList<>();
@@ -129,6 +168,11 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         } else if (v.getId() == R.id.textViewDescription)
         {
                 updateDescription(position);
+        }
+
+        else if(v.getId()==R.id.imageView){
+            currentImageUpdatePosition = position;
+            updateImage();
         }
     }
 
@@ -197,9 +241,34 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
             });
             builder1.show();
         }
+        private void updateImage()
+        {
+            historyItemsButtonClickHandlers.onImageButtonClickInViewItems(getView());
 
+            //Toast.makeText(getContext(),"clicked iamgeview",Toast.LENGTH_SHORT).show();
+        }
 
+    private void loadImageIntoImageView(Uri uri) {
+        Glide.with(requireContext())
+                .load(uri)
+                .apply(new RequestOptions()
+                        .override(1000,1000)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop())
+                .into(historyListItemBinding.imageView);
+    }
 
+    private void updateImageUri(Uri uri){
 
+        String url=uri.toString();
+        int id= historyItemsArrayList.get(currentImageUpdatePosition).getId();
+        // Update the URL in the array list
+        historyItemsArrayList.get(currentImageUpdatePosition).setImageUrl(url);
+        recyclerViewAdapter.notifyItemChanged(currentImageUpdatePosition);
+        // Update the URL in the ViewModel
+        roomsViewModel.UpdateImageUrl(url, id);
+        // Load the new image into the ImageView
+        loadImageIntoImageView(uri);
 
+    }
 }
