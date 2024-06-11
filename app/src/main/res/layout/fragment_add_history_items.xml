@@ -33,7 +33,7 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:padding="10sp"
                     android:text="Welcome to History room"
@@ -46,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50sp"
                     android:hint="Please enter name of the history item"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -59,8 +59,8 @@
                     android:layout_marginTop="30sp"
                     android:hint="Please enter description of the history item"
                     android:inputType="textMultiLine"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -80,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Select Image"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_marginStart="150sp"
                     android:textStyle="bold" />
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Select Audio"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_marginStart="150sp"
                     android:textStyle="bold" />
@@ -110,7 +110,7 @@
                     android:id="@+id/tvSelectedAudio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_marginStart="150sp"
                     android:textStyle="bold" />

@@ -48,9 +48,11 @@ public class HistoryRoomActivity extends AppCompatActivity    {
                     case 0:
                         //tab.setText("Fragment 1");
                         tab.setText("Add History Items");
+                        tab.setIcon(R.drawable.baseline_add_24);
                         break;
                     case 1:
                         tab.setText("View History Items");
+                        tab.setIcon(R.drawable.baseline_view_array_24);
                         break;
 //                    case 2:
 //                        tab.setText("Tab 3");

@@ -1,8 +1,10 @@
 package com.example.memorypalaceapp.ui.history;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,6 +26,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ActivityResultLauncher<Intent> launcher;
     private ItemClickListener itemClickListener;
     ArrayList<HistoryItems> historyItems;
+    private Drawable icon_name;
+    private Drawable icon_image;
+
     private HistoryListItemBinding historyListItemBinding;
     @SuppressLint("NotifyDataSetChanged")
     public RecyclerViewAdapter()
@@ -35,10 +40,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void setItemClickListener(ItemClickListener itemClickListener){
         this.itemClickListener=itemClickListener;
     }
-
-
-
-
 
     @NonNull
     @Override
@@ -57,6 +58,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      HistoryItems currentHistoryItem=historyItems.get(position);
      holder.historyListItemBinding.setHistoryitems(currentHistoryItem);
 
+        //Setting up the icons
+        // Set the icon programmatically
+     // icon_name = holder.itemView.getContext().getResources().getDrawable(R.drawable.baseline_add_box_24);
+      //holder.historyListItemBinding.textViewName.setCompoundDrawablesWithIntrinsicBounds(icon_name, null, null, null);
 
      //holder.historyListItemBinding.executePendingBindings();
     }
@@ -103,7 +108,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
 
-
-
-
 }
+
+
+

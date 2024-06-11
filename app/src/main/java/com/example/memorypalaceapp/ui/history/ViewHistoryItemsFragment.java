@@ -123,8 +123,13 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
             @Override
             public void onChanged(List<HistoryItems> historyItems) {
                 historyItemsArrayList.clear();
-                historyItemsArrayList.addAll(historyItems);
-                recyclerViewAdapter.notifyDataSetChanged();
+
+                if (historyItems.isEmpty()) {
+                    fragmentViewHistoryItemsBinding.emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    fragmentViewHistoryItemsBinding.emptyView.setVisibility(View.GONE);
+                    historyItemsArrayList.addAll(historyItems);
+                    recyclerViewAdapter.notifyDataSetChanged();
 
 //                for(HistoryItems hi:historyItems){
 //
@@ -132,6 +137,7 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
 //                    historyItemsArrayList.add(hi);
 //                }
 //                recyclerViewAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -160,11 +166,9 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
 
 
     }
-
     //onClick method of the Interface ItemClickListener
     @Override
     public void onCLick(View v, int position) {
-
         if (v.getId() == R.id.textViewName) {
             updateName(position);
 
@@ -172,23 +176,17 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         {
             updateDescription(position);
         }
-
         else if(v.getId()==R.id.imageView){
             currentImageUpdatePosition = position;
             updateImage();
         }
-
         else if(v.getId()==R.id.textViewDate)
         {
             int currentPos=historyItemsArrayList.get(position).getId();
             String currentDate= historyItemsArrayList.get(position).getDate();
-
             updateDate(v,currentPos,currentDate);
-
-
         }
     }
-
     private void updateDate(View view, int currentpos, String currentDate)
     {
         Context context=view.getContext();
@@ -206,7 +204,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         },year,month,day );
         datePickerDialog.show();
     }
-
 private void updateName(int position)
 {
     int itemIdName= historyItemsArrayList.get(position).getId();
