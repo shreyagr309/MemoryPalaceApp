@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -15,23 +14,15 @@ import androidx.activity.result.ActivityResultLauncher;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.BindingAdapter;
 
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.memorypalaceapp.BR;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
-import com.example.memorypalaceapp.databinding.HistoryListItemBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
-import com.example.memorypalaceapp.ui.MainActivity;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +35,7 @@ import kotlin.jvm.internal.Intrinsics;
 public class HistoryItemsButtonClickHandlers extends BaseObservable {
     private ActivityResultLauncher<Intent> launcher;
     private ActivityResultLauncher<Intent>launcher1;
-    private  RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerViewAdapterHistoryItems recyclerViewAdapterHistoryItems;
     private Context context;
     private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
     private String selectedDate;

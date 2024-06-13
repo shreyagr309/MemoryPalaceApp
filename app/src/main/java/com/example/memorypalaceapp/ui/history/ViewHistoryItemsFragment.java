@@ -1,7 +1,5 @@
 package com.example.memorypalaceapp.ui.history;
-
 import static android.app.Activity.RESULT_OK;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -9,24 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.telephony.ims.RcsUceAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,32 +30,30 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentViewHistoryItemsBinding;
 import com.example.memorypalaceapp.databinding.HistoryListItemBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
-import com.example.memorypalaceapp.model.RoomsDatabase;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
+import com.example.memorypalaceapp.viewmodel.SharedViewModel;
 import com.github.drjacky.imagepicker.ImagePicker;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ViewHistoryItemsFragment extends Fragment implements ItemClickListener
 {
+    private SharedViewModel sharedViewModel;
+    private HistoryItems deletedItem;
+    private int position;
     private int currentImageUpdatePosition;
     private HistoryListItemBinding historyListItemBinding;
     private HistoryItems historyItems;
     private ActivityResultLauncher<Intent> launcher1;
     private HistoryItemsButtonClickHandlers historyItemsButtonClickHandlers;
     private FragmentViewHistoryItemsBinding fragmentViewHistoryItemsBinding;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerViewAdapterHistoryItems recyclerViewAdapterHistoryItems;
     private RecyclerView recyclerView;
     private ArrayList<HistoryItems> historyItemsArrayList;
     private RoomsViewModel roomsViewModel;
@@ -69,7 +62,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
     {
         // Required empty public constructor
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -77,17 +69,17 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         // Inflate the layout for this fragment
         fragmentViewHistoryItemsBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_view_history_items
                 ,container,false);
-
         View rootView= fragmentViewHistoryItemsBinding.getRoot();
-
         return rootView;
     }
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
         //Recycler View
         recyclerView=fragmentViewHistoryItemsBinding.recyclerView;
+        // Initialize the adapter and set it to RecyclerView
+        recyclerViewAdapterHistoryItems = new RecyclerViewAdapterHistoryItems();
         LinearLayoutManager layoutManager=new LinearLayoutManager(view.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -100,7 +92,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
                 if (uri != null)
                 {
                     updateImageUri(uri);
-
                 }
                 // Use the uri to load the image
             } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
@@ -109,28 +100,25 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
                 ).show();
             }
         });
-
-
         historyItemsButtonClickHandlers=new HistoryItemsButtonClickHandlers(launcher1);
-
         //Initialize the arrayList
         historyItemsArrayList=new ArrayList<>();
         //Initialize the View Model
         roomsViewModel= new ViewModelProvider(requireActivity()).get(RoomsViewModel.class);
+        sharedViewModel=new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Loading the Data from ROOM DB
         roomsViewModel.getAllHistoryItems().observe(getViewLifecycleOwner(), new Observer<List<HistoryItems>>() {
             //Clears the content of arraylist, before showing the full data
             @Override
-            public void onChanged(List<HistoryItems> historyItems) {
+            public void onChanged(List<HistoryItems> historyItems)
+            {
                 historyItemsArrayList.clear();
-
                 if (historyItems.isEmpty()) {
                     fragmentViewHistoryItemsBinding.emptyView.setVisibility(View.VISIBLE);
                 } else {
                     fragmentViewHistoryItemsBinding.emptyView.setVisibility(View.GONE);
                     historyItemsArrayList.addAll(historyItems);
-                    recyclerViewAdapter.notifyDataSetChanged();
-
+                    recyclerViewAdapterHistoryItems.notifyDataSetChanged();
 //                for(HistoryItems hi:historyItems){
 //
 //                    Log.v("TAGYS",""+hi.getName());
@@ -138,38 +126,50 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
 //                }
 //                recyclerViewAdapter.notifyDataSetChanged();
                 }
+
+//                AppCompatActivity activity = (AppCompatActivity) requireActivity();
+//                if (activity != null) {
+//                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+//                    ViewNames viewNamesFragment = (ViewNames) fragmentManager.findFragmentByTag("ViewNames"); // Assuming ViewNames has a tag
+//                    if (viewNamesFragment != null) {
+//                        viewNamesFragment.notifyItemDeleted(deletedItem); // Call method
+//                    }
+//                }
+                
+
             }
         });
 
-        // Initialize the adapter and set it to RecyclerView
-        recyclerViewAdapter = new RecyclerViewAdapter();
-        recyclerViewAdapter.setHistoryItems(historyItemsArrayList);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.setItemClickListener(this);
-
-
+        recyclerViewAdapterHistoryItems.setHistoryItems(historyItemsArrayList);
+        recyclerView.setAdapter(recyclerViewAdapterHistoryItems);
+        recyclerViewAdapterHistoryItems.setItemClickListener(this);
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
             {
+                position=viewHolder.getAbsoluteAdapterPosition();
                 //What will happen if we swipe left
-                HistoryItems h=historyItemsArrayList.get(viewHolder.getAbsoluteAdapterPosition());
-                roomsViewModel.deleteHistoryItems(h);
+                //historyItemsArrayList.get(position) retrieves
+                // the actual HistoryItems object from the list
+                // at the specified index.
+                deletedItem=historyItemsArrayList.get(position);
+                roomsViewModel.deleteHistoryItems(deletedItem);
+                // Notify ViewNames fragment of the deletion
+                sharedViewModel.setDeletedItem(deletedItem);
                 Toast.makeText(getContext(),"Items deleted",Toast.LENGTH_SHORT).show();
             }
+            // Find ViewNames fragment directly from the Activity (assuming it's added directly)
         }).attachToRecyclerView(recyclerView);
-
-
     }
     //onClick method of the Interface ItemClickListener
     @Override
     public void onCLick(View v, int position) {
-        if (v.getId() == R.id.textViewName) {
+        if (v.getId() == R.id.textViewName)
+        {
             updateName(position);
 
         } else if (v.getId() == R.id.textViewDescription)
@@ -204,9 +204,10 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         },year,month,day );
         datePickerDialog.show();
     }
-private void updateName(int position)
+    private void updateName(int position)
 {
     int itemIdName= historyItemsArrayList.get(position).getId();
+   // sharedViewModel.setPos(itemIdName);
     Log.v("TAGYS",""+itemIdName);
     String currentName=historyItemsArrayList.get(position).getName();
     //Show the alert dialog for updating the name
@@ -224,6 +225,8 @@ private void updateName(int position)
             Log.v("TAGYS",""+itemIdName);
             // Update the name using ViewModel
             roomsViewModel.updateName(newName, itemIdName);
+          //sharedViewModel.setupdatedName(newName);
+
         }
     });
     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -278,12 +281,11 @@ private void updateImage()
 //                .into(historyListItemBinding.imageView);
 //    }
 private void updateImageUri(Uri uri){
-
     String url=uri.toString();
     int id= historyItemsArrayList.get(currentImageUpdatePosition).getId();
     // Update the URL in the array list
     historyItemsArrayList.get(currentImageUpdatePosition).setImageUrl(url);
-    recyclerViewAdapter.notifyItemChanged(currentImageUpdatePosition);
+    recyclerViewAdapterHistoryItems.notifyItemChanged(currentImageUpdatePosition);
     // Update the URL in the ViewModel
     roomsViewModel.UpdateImageUrl(url, id);
     // Load the new image into the ImageView
@@ -293,7 +295,6 @@ private void updateImageUri(Uri uri){
 @BindingAdapter({"loadImage"})
 public static void loadImage(ImageView imageView, String url)
 {
-
     if (url == null || url.isEmpty())
     {
 //                int placeholderResId = imageView.getResources().getIdentifier(
@@ -316,4 +317,8 @@ public static void loadImage(ImageView imageView, String url)
 //                        .into(imageView);
     }
 }
+       //public int sendPosition()
+//       {
+//          return position;
+//       }
 }

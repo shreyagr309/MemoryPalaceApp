@@ -60,8 +60,8 @@ public interface HistoryItemsDAO {
     @Query("UPDATE history_items set timeStamp=:timeStamp where unique_id_history_items=:id")
     void  updateTimeStamp(long timeStamp,int id);
     // Queries for deleting the items
-    @Query("DELETE FROM history_items where unique_id_history_items=:id")
-    void deleteItem(int id);
+//    @Query("DELETE FROM history_items where unique_id_history_items=:id")
+//    void deleteItem(int id);
 
 //    @Insert
 //    void insertName(String name);

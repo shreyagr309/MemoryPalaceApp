@@ -188,17 +188,17 @@ public class ItemsRepository
 
 
     }
-    public void deleteItem(int id)
-    {
-        executor.execute(new Runnable() {
-            @Override
-            public void run()
-            {
-                historyItemsDAO.deleteItem(id);
-            }
-        });
-
-
-    }
+//    public void deleteItem(int id)
+//    {
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run()
+//            {
+//                historyItemsDAO.deleteItem(id);
+//            }
+//        });
+//
+//
+//    }
 
 }

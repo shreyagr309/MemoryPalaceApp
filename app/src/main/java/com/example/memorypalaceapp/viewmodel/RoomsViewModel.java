@@ -10,7 +10,6 @@ import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.model.ItemsRepository;
 
 import java.util.List;
-
 public class RoomsViewModel extends AndroidViewModel
 {
     private ItemsRepository itemsRepository;
@@ -24,35 +23,34 @@ public class RoomsViewModel extends AndroidViewModel
         itemsRepository.addHistoryItems(historyItems);
      }
      public void deleteHistoryItems(HistoryItems historyItems){
-
         itemsRepository.deleteHistoryItems(historyItems);
      }
      public LiveData<List<HistoryItems>> getAllHistoryItems()
      {
        return itemsRepository.getAllHistoryItems();
-
      }
-
      public void updateName(String name, int id)
      {
          itemsRepository.updateName(name,id);
-
      }
      public void updateDesc(String desc, int id){
-
         itemsRepository.updateDescription(desc,id);
      }
-
-
      public void UpdateImageUrl(String url, int id){
-
         itemsRepository.updateImageUrl(url,id);
      }
-
      public void updateDate(String date, int id){
 
         itemsRepository.updateDate(date,id);
      }
+    public LiveData<List<String>> getAllNames()
+    {
+        return itemsRepository.getAllnames();
+    }
 
+    public LiveData<List<String>> getAllUrlOfImageFile()
+    {
+        return itemsRepository.getAllUrlOfImageFile();
+    }
 
 }

@@ -59,6 +59,8 @@ public class HistoryItems extends BaseObservable
     public void setDescription(String description) {
         this.description = description;
     }
+
+
     public String getName() {
         return name;
     }
@@ -99,8 +101,15 @@ public class HistoryItems extends BaseObservable
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;//Sets the current time in milliseconds.
     }
-    public HistoryItems(){
+    public HistoryItems()
+    {
 
     }
+
+    public HistoryItems(String name){
+
+        this.name=name;
+    }
+
 
 }

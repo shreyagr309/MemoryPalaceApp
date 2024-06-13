@@ -32,6 +32,8 @@ public class HistoryRoomActivity extends AppCompatActivity    {
         myViewPagerAdapter = new MyHistoryViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         myViewPagerAdapter.addFragment(new AddHistoryItemsFragment());
         myViewPagerAdapter.addFragment(new ViewHistoryItemsFragment());
+        myViewPagerAdapter.addFragment(new ViewNamesFragment());
+        myViewPagerAdapter.addFragment(new ViewALLImagesFragment());
         // Set the orientation in ViewPager2
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         //Connecting the adapter with ViewPager2
@@ -54,9 +56,13 @@ public class HistoryRoomActivity extends AppCompatActivity    {
                         tab.setText("View History Items");
                         tab.setIcon(R.drawable.baseline_view_array_24);
                         break;
-//                    case 2:
-//                        tab.setText("Tab 3");
-//                        break;
+                    case 2:
+                        tab.setText("View Names");
+                        tab.setIcon(R.drawable.baseline_calendar_view_week_24);
+                        break;
+                    case 3:
+                        tab.setIcon(R.drawable.baseline_image_24);
+                        tab.setText("View All Images");
                 }
             }
         }
