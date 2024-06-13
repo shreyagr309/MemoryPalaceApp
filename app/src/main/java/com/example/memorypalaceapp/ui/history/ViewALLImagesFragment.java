@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentViewAllImagesBinding;
+import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
 import com.example.memorypalaceapp.viewmodel.SharedViewModel;
 
@@ -76,6 +77,22 @@ public class ViewALLImagesFragment extends Fragment
         roomsViewModel= new ViewModelProvider(requireActivity()).get(RoomsViewModel.class);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
+        sharedViewModel.getDeletedItem().observe(getViewLifecycleOwner(), new Observer<HistoryItems>() {
+            @Override
+            public void onChanged(HistoryItems deletedItem)
+            {
+
+                if(deletedItem!=null){
+
+                    // Perform deletion in namesArrayList based on the deletedItem
+                    imagesArrayList.remove(deletedItem.getImageUrl()); // Assuming getName() returns the name of HistoryItems
+                    recyclerViewAdapterImages.notifyDataSetChanged();
+
+                }
+
+
+            }
+        });
         roomsViewModel.getAllUrlOfImageFile().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> imageurlsList)
@@ -105,29 +122,4 @@ public class ViewALLImagesFragment extends Fragment
 
     }
 
-    @BindingAdapter({"loadimage"})
-    public static void loadImage(ImageView imageView, String url)
-    {
-        if (url == null || url.isEmpty())
-        {
-//                int placeholderResId = imageView.getResources().getIdentifier(
-//                        "baseline_add_a_photo_24.xml", "drawable", imageView.getContext().getPackageName());
-            Glide.with(imageView.getRootView().getContext())
-                    .load(R.drawable.baseline_add_a_photo_24) // Default or placeholder image
-                    .apply(RequestOptions.circleCropTransform()) // Apply circular crop
-                    .into(imageView);
-
-//                Picasso.get()
-//                        .load(placeholderResId)
-//                        .into(imageView);
-        } else
-        {
-            Glide.with(imageView)
-                    .load(url)
-                    .into(imageView);
-//                Picasso.get()
-//                        .load(url)
-//                        .into(imageView);
-        }
-    }
 }

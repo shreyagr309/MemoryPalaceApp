@@ -15,7 +15,7 @@
         android:textColor="@color/white"
         android:textSize="30sp"
         android:layout_marginTop="196dp"
-        android:text="No items available. Please add something."
+        android:text="No images available. Please add something."
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"

@@ -63,13 +63,12 @@ public class HistoryRoomActivity extends AppCompatActivity    {
                     case 3:
                         tab.setIcon(R.drawable.baseline_image_24);
                         tab.setText("View All Images");
+                        break;
                 }
             }
         }
         ).attach();//The attach method is called at the end to attach the
         // tab layout mediator to the tab layout and Viewpager
-
-
 
     }
 
