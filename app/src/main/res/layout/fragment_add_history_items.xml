@@ -11,6 +11,10 @@
         <variable
             name="historyitemclickHandler"
             type="com.example.memorypalaceapp.ui.history.HistoryItemsButtonClickHandlers" />
+
+            <variable
+                name="sharedviewmodel"
+                type="com.example.memorypalaceapp.viewmodel.SharedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

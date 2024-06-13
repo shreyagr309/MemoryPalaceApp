@@ -5,18 +5,61 @@ import androidx.lifecycle.ViewModel;
 import com.example.memorypalaceapp.model.HistoryItems;
 
 // This View Model class is used for communicating between the fragments
-public class SharedViewModel extends ViewModel
-{
+public class SharedViewModel extends ViewModel {
+    //Variables for saving the data, if the screen rotates.
+    private MutableLiveData<String> name = new MutableLiveData<>();
+    private MutableLiveData<String> desc = new MutableLiveData<>();
+    private MutableLiveData<String> imageUrl = new MutableLiveData<>();
+    private MutableLiveData<String> date = new MutableLiveData<>();
+
+    public MutableLiveData<String> getName() {
+        return name;
+    }
+
+    public void setName(MutableLiveData<String> name) {
+        this.name = name;
+    }
+
+    public MutableLiveData<String> getDesc() {
+        return desc;
+    }
+
+    public void setDesc(MutableLiveData<String> desc) {
+        this.desc = desc;
+    }
+
+    public MutableLiveData<String> getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(MutableLiveData<String> imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public MutableLiveData<String> getDate() {
+        return date;
+    }
+
+    public void setDate(MutableLiveData<String> date) {
+        this.date = date;
+    }
+
+    public void setDeletedItem(MutableLiveData<HistoryItems> deletedItem) {
+        this.deletedItem = deletedItem;
+    }
+
     private MutableLiveData<HistoryItems> deletedItem = new MutableLiveData<>();
+
     //private MutableLiveData<String>updatedName=new MutableLiveData<>();
     //private int pos;
     public void setDeletedItem(HistoryItems item) {
         deletedItem.setValue(item);
     }
-    public LiveData<HistoryItems> getDeletedItem()
-    {
+
+    public LiveData<HistoryItems> getDeletedItem() {
         return deletedItem;
     }
+}
 //    public void setupdatedName(String name) {
 //        updatedName.setValue(name);
 //    }
@@ -33,4 +76,3 @@ public class SharedViewModel extends ViewModel
 //    public void setPos(int pos) {
 //        this.pos = pos;
 //    }
-}

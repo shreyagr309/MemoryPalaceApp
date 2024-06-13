@@ -292,33 +292,9 @@ private void updateImageUri(Uri uri){
     //loadImageIntoImageView(uri);
 }
 //   We are accessing this method from XMl, fragment_add_history_items and from fragment_view_history_items.
-@BindingAdapter({"loadImage"})
-public static void loadImage(ImageView imageView, String url)
-{
-    if (url == null || url.isEmpty())
-    {
-//                int placeholderResId = imageView.getResources().getIdentifier(
-//                        "baseline_add_a_photo_24.xml", "drawable", imageView.getContext().getPackageName());
-        Glide.with(imageView.getRootView().getContext())
-                .load(R.drawable.baseline_add_a_photo_24) // Default or placeholder image
-                .apply(RequestOptions.circleCropTransform()) // Apply circular crop
-                .into(imageView);
 
-//                Picasso.get()
-//                        .load(placeholderResId)
-//                        .into(imageView);
-    } else
-    {
-        Glide.with(imageView)
-                .load(url)
-                .into(imageView);
-//                Picasso.get()
-//                        .load(url)
-//                        .into(imageView);
-    }
 }
        //public int sendPosition()
 //       {
 //          return position;
 //       }
-}
