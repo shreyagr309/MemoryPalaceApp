@@ -2,60 +2,59 @@ package com.example.memorypalaceapp.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
 
 // This View Model class is used for communicating between the fragments
-public class SharedViewModel extends ViewModel {
+public class SharedViewModel extends ViewModel
+{
     //Variables for saving the data, if the screen rotates.
+    private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
     private MutableLiveData<String> name = new MutableLiveData<>();
     private MutableLiveData<String> desc = new MutableLiveData<>();
     private MutableLiveData<String> imageUrl = new MutableLiveData<>();
     private MutableLiveData<String> date = new MutableLiveData<>();
+    private MutableLiveData<HistoryItems> deletedItem = new MutableLiveData<>();
 
-    public MutableLiveData<String> getName() {
+    public LiveData<String> getName() {
         return name;
     }
+    public void setName(String name)
+    {
 
-    public void setName(MutableLiveData<String> name) {
-        this.name = name;
+        this.name.setValue(name);
     }
-
-    public MutableLiveData<String> getDesc() {
+    public LiveData<String> getDesc() {
         return desc;
     }
-
-    public void setDesc(MutableLiveData<String> desc) {
-        this.desc = desc;
+    public void setDesc( String desc) {
+        this.desc.setValue(desc);
     }
-
-    public MutableLiveData<String> getImageUrl() {
+    public LiveData<String> getImageUrl() {
         return imageUrl;
     }
-
-    public void setImageUrl(MutableLiveData<String> imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(  String imageUrl)
+    {
+        this.imageUrl.setValue(imageUrl);
     }
 
-    public MutableLiveData<String> getDate() {
+    public LiveData<String> getDate() {
         return date;
     }
-
-    public void setDate(MutableLiveData<String> date) {
-        this.date = date;
+    public void setDate( String date) {
+        this.date.setValue(date);
     }
 
-    public void setDeletedItem(MutableLiveData<HistoryItems> deletedItem) {
-        this.deletedItem = deletedItem;
-    }
-
-    private MutableLiveData<HistoryItems> deletedItem = new MutableLiveData<>();
+//    public void setDeletedItem(MutableLiveData<HistoryItems> deletedItem) {
+//        this.deletedItem = deletedItem;
+//    }
 
     //private MutableLiveData<String>updatedName=new MutableLiveData<>();
     //private int pos;
     public void setDeletedItem(HistoryItems item) {
         deletedItem.setValue(item);
     }
-
     public LiveData<HistoryItems> getDeletedItem() {
         return deletedItem;
     }

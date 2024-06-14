@@ -1,6 +1,7 @@
 package com.example.memorypalaceapp.ui.history;
 import static android.app.Activity.RESULT_OK;
 import android.content.Intent;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResult;
@@ -16,20 +17,28 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
+import com.example.memorypalaceapp.databinding.HistoryListItemBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
 import com.example.memorypalaceapp.viewmodel.SharedViewModel;
 import com.github.drjacky.imagepicker.ImagePicker;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 public class AddHistoryItemsFragment extends Fragment
 {
+    HistoryItemsButtonClickHandlers historyItemsButtonClickHandlers1;
     private String url;
-    SharedViewModel sharedViewModel;
+    private SharedViewModel sharedViewModel;
     private RoomsViewModel roomsViewModel;
     private HistoryItemsButtonClickHandlers historyItemsButtonClickHandlers;
      private FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding;
@@ -42,7 +51,6 @@ public class AddHistoryItemsFragment extends Fragment
                              Bundle savedInstanceState) {
         fragmentAddHistoryItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_history_items,
                 container, false);
-
         View rootView = fragmentAddHistoryItemsBinding.getRoot();
         return rootView;
     }
@@ -71,8 +79,7 @@ public class AddHistoryItemsFragment extends Fragment
                 {
                     url=uri.toString();
                     historyItems.setImageUrl(url);
-
-                    //loadImageIntoImageView(uri); // Call method from the click handler
+                    sharedViewModel.setImageUrl(url);
                 }
                 // Use the uri to load the image
             } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
@@ -81,11 +88,10 @@ public class AddHistoryItemsFragment extends Fragment
                 ).show();
             }
         });
-
         //context = requireActivity();//Get the Host, that is Activity
-        roomsViewModel = new ViewModelProvider(this).get(RoomsViewModel.class);
+        roomsViewModel = new ViewModelProvider(requireActivity()).get(RoomsViewModel.class);
         sharedViewModel=new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        historyItemsButtonClickHandlers = new HistoryItemsButtonClickHandlers(roomsViewModel, historyItems, launcher,requireContext(),fragmentAddHistoryItemsBinding);
+        historyItemsButtonClickHandlers = new HistoryItemsButtonClickHandlers(roomsViewModel, historyItems, launcher,requireContext(),fragmentAddHistoryItemsBinding,sharedViewModel);
         //Link Data binding with classes
         fragmentAddHistoryItemsBinding.setHistoryItems(historyItems);
         fragmentAddHistoryItemsBinding.setHistoryitemclickHandler(historyItemsButtonClickHandlers);
@@ -93,86 +99,65 @@ public class AddHistoryItemsFragment extends Fragment
         //  return inflater.inflate(R.layout.fragment_add_history_items, container, false);
         //Linked SharedViewModel with Binding
         fragmentAddHistoryItemsBinding.setSharedviewmodel(sharedViewModel);
-
-        // Observe the Changes in the Data.
-
+        // Observe the Changes in the Data, and make sure it survives, if the screen rotates.
         sharedViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
+            //since we have established two way data binding in the layout
+            //therefore we are getting the historyItems object and setting the name by using set
+            //name method, and since in text of EditText, we have used
+            //@{historyItems.name}, so changes will be reflected in the EditText.
             @Override
             public void onChanged(String name)
             {
-
                 if(name!=null)
-                fragmentAddHistoryItemsBinding.edtName.setText(name);
-
+                    fragmentAddHistoryItemsBinding.getHistoryItems().setName(name);
             }
         });
-
-        sharedViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String name)
-            {
-
-                if(name!=null)
-                    fragmentAddHistoryItemsBinding.edtName.setText(name);
-
-            }
-        });
-
-        sharedViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String name)
-            {
-
-                if(name!=null)
-                    fragmentAddHistoryItemsBinding.edtName.setText(name);
-
-            }
-        });
-
-        sharedViewModel.getDesc().observe(getViewLifecycleOwner(), new Observer<String>() {
+        sharedViewModel.getDesc().observe(requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String desc)
             {
-
                 if(desc!=null)
-                    fragmentAddHistoryItemsBinding.edtDescription.setText(desc);
-
+                    fragmentAddHistoryItemsBinding.getHistoryItems().setDescription(desc);
             }
         });
-
-        sharedViewModel.getImageUrl().observe(getViewLifecycleOwner(), new Observer<String>() {
+        sharedViewModel.getImageUrl().observe(requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String Url)
             {
-                Url=url;
-
-                if(url!=null){
+                if(Url!=null){
+                    fragmentAddHistoryItemsBinding.getHistoryItems().setImageUrl(Url);
                     //Load the image
-
-                    loadImage(fragmentAddHistoryItemsBinding.imageView,Url);
-
+//                    Glide.with(fragmentAddHistoryItemsBinding.imageView) // Assuming you have a reference to the ImageView
+//                            .load(Url)
+//                            .into(fragmentAddHistoryItemsBinding.imageView);
                 }
-
-
             }
         });
-
-        sharedViewModel.getDate().observe(getViewLifecycleOwner(), new Observer<String>() {
+        sharedViewModel.getDate().observe(requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String date)
             {
-
-                if(date!=null){
-
-                    fragmentAddHistoryItemsBinding.tvSelectedDate.setText(date);
-
+                if(date!=null)
+                {   // Because if the screen rotates, we need to save the info in the
+                    //History Items.
+                    //This line updates the date property within the historyItems object directly.
+                    // This ensures the historyItems object has the latest
+                    // date information before the save button is clicked.
+                    fragmentAddHistoryItemsBinding.getHistoryItems().setDate(date);
+                    //This line updates the selectedDate property within the
+                    // HistoryItemsButtonClickHandlers class.
+                    //Because in the text of Date, we have used @{historybuttonclickhandler.selecteddate}
+                    // This property updates the UI (the TextView displaying the selected date)
+                    // using data binding.
+                    fragmentAddHistoryItemsBinding.getHistoryitemclickHandler().setSelectedDate(date);
+                    Toast.makeText(requireContext(), "ok", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
     @BindingAdapter({"loadImage"})
-    public static void loadImage(ImageView imageView, String url) {
+    public static void loadImage(ImageView imageView, String url)
+    {
         if (url == null || url.isEmpty()) {
 //                int placeholderResId = imageView.getResources().getIdentifier(
 //                        "baseline_add_a_photo_24.xml", "drawable", imageView.getContext().getPackageName());
@@ -180,18 +165,27 @@ public class AddHistoryItemsFragment extends Fragment
                     .load(R.drawable.baseline_add_a_photo_24) // Default or placeholder image
                     .apply(RequestOptions.circleCropTransform()) // Apply circular crop
                     .into(imageView);
+        }
+        else {
+            Glide.with(imageView)
+                    .load(url)
+                    .into(imageView);
+////                Picasso.get()
+////                        .load(url)
+////                        .into(imageView);
+//
+        }
 
 //                Picasso.get()
 //                        .load(placeholderResId)
 //                        .into(imageView);
-        } else {
-            Glide.with(imageView)
-                    .load(url)
-                    .into(imageView);
-//                Picasso.get()
-//                        .load(url)
-//                        .into(imageView);
-        }
+//        } else {
+//            Glide.with(imageView)
+//                    .load(url)
+//                    .into(imageView);
+////                Picasso.get()
+////                        .load(url)
+////                        .into(imageView);
+//        }
     }
-
 }

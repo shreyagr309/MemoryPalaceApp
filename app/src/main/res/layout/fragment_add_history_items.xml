@@ -51,6 +51,7 @@
                     android:layout_marginTop="50sp"
                     android:hint="Please enter name of the history item"
                     android:textColor="@color/white"
+                    android:onTextChanged="@{historyitemclickHandler::onNameChanged}"
                     android:textColorHint="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -61,6 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30sp"
+                    android:onTextChanged="@{historyitemclickHandler::onDescChanged}"
                     android:hint="Please enter description of the history item"
                     android:inputType="textMultiLine"
                     android:textColor="@color/white"
@@ -73,6 +75,7 @@
                     android:onClick="@{historyitemclickHandler::onImageButtonClick}"
                     android:id="@+id/imageView"
                     bind:loadImage="@{historyItems.imageUrl}"
+
                     android:layout_width="100sp"
                     android:layout_height="100sp"
                     android:layout_marginTop="50sp"

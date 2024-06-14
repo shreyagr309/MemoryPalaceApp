@@ -21,6 +21,7 @@ import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
+import com.example.memorypalaceapp.viewmodel.SharedViewModel;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
 
@@ -32,7 +33,9 @@ import java.util.Date;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
-public class HistoryItemsButtonClickHandlers extends BaseObservable {
+public class HistoryItemsButtonClickHandlers extends BaseObservable
+{
+    private SharedViewModel sharedViewModel;
     private ActivityResultLauncher<Intent> launcher;
     private ActivityResultLauncher<Intent>launcher1;
     private RecyclerViewAdapterHistoryItems recyclerViewAdapterHistoryItems;
@@ -41,21 +44,19 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
     private String selectedDate;
     private RoomsViewModel historyItemsViewModel;
     private HistoryItems historyItems;
-
-    public HistoryItemsButtonClickHandlers(RoomsViewModel historyItemsViewModel, HistoryItems historyItems, ActivityResultLauncher<Intent> launcher, Context context, FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding) {
+    public HistoryItemsButtonClickHandlers(RoomsViewModel historyItemsViewModel, HistoryItems historyItems, ActivityResultLauncher<Intent> launcher, Context context,
+                                           FragmentAddHistoryItemsBinding fragmentAddHistoryItemsBinding, SharedViewModel sharedViewModel) {
         this.historyItemsViewModel = historyItemsViewModel;
         this.historyItems = historyItems;
         this.context = context;
         this.launcher = launcher;
         this.fragmentAddHistoryItemsBinding=fragmentAddHistoryItemsBinding;
-
+        this.sharedViewModel=sharedViewModel;
     }
     public HistoryItemsButtonClickHandlers(ActivityResultLauncher<Intent>launcher1)
     {
         this.launcher1=launcher1;
-
     }
-
     @Bindable
     public String getSelectedDate() {
         return selectedDate;
@@ -65,7 +66,6 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
         this.selectedDate = selectedDate;
         notifyPropertyChanged(BR.selectedDate);
     }
-
     public void onImageButtonClick(View view) {
         ImagePicker.Companion.with((Activity) view.getContext())
                 .crop()
@@ -127,11 +127,11 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
                     String formattedDate = dayOfMonth + "/" + (month+1) + "/" + year;
                     setSelectedDate(formattedDate);
                     historyItems.setDate(formattedDate);
+                    sharedViewModel.setDate(formattedDate);
                 }
             }, year, month, day);
             datePickerDialog.show();
         }
-
         private void reset()
         {
             // Reset the properties of the historyItems object
@@ -141,19 +141,16 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
             historyItems.setAudioUrl(null);
             historyItems.setDate(null);
             historyItems.setTimeStamp(0);
-
-
+            sharedViewModel.setImageUrl(null);
             fragmentAddHistoryItemsBinding.edtName.setText(null);
             fragmentAddHistoryItemsBinding.edtDescription.setText(null);
             fragmentAddHistoryItemsBinding.imageView.setImageResource(R.drawable.baseline_add_a_photo_24 );
             fragmentAddHistoryItemsBinding.tvSelectedDate.setText(null);
-
             // Notify the binding about the property changes
             notifyPropertyChanged(BR.historyItems);
         }
-
-
-    public void onImageButtonClickInViewItems(View view) {
+        public void onImageButtonClickInViewItems(View view)
+        {
         ImagePicker.Companion.with((Activity) view.getContext())
                 .crop()
                 //.cropOval()
@@ -171,8 +168,17 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable {
                         launcher1.launch(it);
                     }
                 });
-
-
     }
+    // In HistoryItemsButtonClickHandlers
+    // This method is called by the onTextChanged listener in the layout file
+    //When ever the data change in the editText
+    public void onNameChanged(CharSequence text, int start, int count, int after) {
+        String newName = text.toString().trim();
+        sharedViewModel.setName(newName);
+    }
+    public void onDescChanged(CharSequence text, int start, int count, int after){
 
+            String newDesc=text.toString().trim();
+            sharedViewModel.setDesc(newDesc);
+    }
 }

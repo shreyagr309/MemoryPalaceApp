@@ -42,8 +42,7 @@ import com.github.drjacky.imagepicker.ImagePicker;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewHistoryItemsFragment extends Fragment implements ItemClickListener
-{
+public class ViewHistoryItemsFragment extends Fragment implements ItemClickListener {
     private SharedViewModel sharedViewModel;
     private HistoryItems deletedItem;
     private int position;
@@ -58,60 +57,57 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
     private ArrayList<HistoryItems> historyItemsArrayList;
     private RoomsViewModel roomsViewModel;
 
-    public ViewHistoryItemsFragment()
-    {
+    public ViewHistoryItemsFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentViewHistoryItemsBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_view_history_items
-                ,container,false);
-        View rootView= fragmentViewHistoryItemsBinding.getRoot();
+        fragmentViewHistoryItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_history_items
+                , container, false);
+        View rootView = fragmentViewHistoryItemsBinding.getRoot();
         return rootView;
     }
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Recycler View
-        recyclerView=fragmentViewHistoryItemsBinding.recyclerView;
+        recyclerView = fragmentViewHistoryItemsBinding.recyclerView;
         // Initialize the adapter and set it to RecyclerView
         recyclerViewAdapterHistoryItems = new RecyclerViewAdapterHistoryItems();
-        LinearLayoutManager layoutManager=new LinearLayoutManager(view.getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        historyItems=new HistoryItems();
+        historyItems = new HistoryItems();
         // historyListItemBinding.setHistoryitems(historyItems);
         //calling the setItemCLickListener method of Recycler View Adapter.
-        launcher1=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+        launcher1 = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
             if (result.getResultCode() == RESULT_OK) {
                 Uri uri = result.getData().getData();
-                if (uri != null)
-                {
+                if (uri != null) {
                     updateImageUri(uri);
                 }
                 // Use the uri to load the image
             } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
                 // Use ImagePicker.Companion.getError(result.getData()) to show an error
-                Toast.makeText(requireContext(),"Error picking image: " + ImagePicker.Companion.getError(result.getData()),Toast.LENGTH_SHORT
+                Toast.makeText(requireContext(), "Error picking image: " + ImagePicker.Companion.getError(result.getData()), Toast.LENGTH_SHORT
                 ).show();
             }
         });
-        historyItemsButtonClickHandlers=new HistoryItemsButtonClickHandlers(launcher1);
+        historyItemsButtonClickHandlers = new HistoryItemsButtonClickHandlers(launcher1);
         //Initialize the arrayList
-        historyItemsArrayList=new ArrayList<>();
+        historyItemsArrayList = new ArrayList<>();
         //Initialize the View Model
-        roomsViewModel= new ViewModelProvider(requireActivity()).get(RoomsViewModel.class);
-        sharedViewModel=new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        roomsViewModel = new ViewModelProvider(requireActivity()).get(RoomsViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Loading the Data from ROOM DB
         roomsViewModel.getAllHistoryItems().observe(getViewLifecycleOwner(), new Observer<List<HistoryItems>>() {
             //Clears the content of arraylist, before showing the full data
             @Override
-            public void onChanged(List<HistoryItems> historyItems)
-            {
+            public void onChanged(List<HistoryItems> historyItems) {
                 historyItemsArrayList.clear();
                 if (historyItems.isEmpty()) {
                     fragmentViewHistoryItemsBinding.emptyView.setVisibility(View.VISIBLE);
@@ -135,7 +131,7 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
 //                        viewNamesFragment.notifyItemDeleted(deletedItem); // Call method
 //                    }
 //                }
-                
+
 
             }
         });
@@ -143,135 +139,132 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         recyclerViewAdapterHistoryItems.setHistoryItems(historyItemsArrayList);
         recyclerView.setAdapter(recyclerViewAdapterHistoryItems);
         recyclerViewAdapterHistoryItems.setItemClickListener(this);
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
-            {
-                position=viewHolder.getAbsoluteAdapterPosition();
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                position = viewHolder.getAbsoluteAdapterPosition();
                 //What will happen if we swipe left
                 //historyItemsArrayList.get(position) retrieves
                 // the actual HistoryItems object from the list
                 // at the specified index.
-                deletedItem=historyItemsArrayList.get(position);
+                deletedItem = historyItemsArrayList.get(position);
                 roomsViewModel.deleteHistoryItems(deletedItem);
                 // Notify ViewNames fragment of the deletion
                 sharedViewModel.setDeletedItem(deletedItem);
-                Toast.makeText(getContext(),"Items deleted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Items deleted", Toast.LENGTH_SHORT).show();
             }
             // Find ViewNames fragment directly from the Activity (assuming it's added directly)
         }).attachToRecyclerView(recyclerView);
     }
+
     //onClick method of the Interface ItemClickListener
     @Override
     public void onCLick(View v, int position) {
-        if (v.getId() == R.id.textViewName)
-        {
+        if (v.getId() == R.id.textViewName) {
             updateName(position);
 
-        } else if (v.getId() == R.id.textViewDescription)
-        {
+        } else if (v.getId() == R.id.textViewDescription) {
             updateDescription(position);
-        }
-        else if(v.getId()==R.id.imageView){
+        } else if (v.getId() == R.id.imageView) {
             currentImageUpdatePosition = position;
             updateImage();
-        }
-        else if(v.getId()==R.id.textViewDate)
-        {
-            int currentPos=historyItemsArrayList.get(position).getId();
-            String currentDate= historyItemsArrayList.get(position).getDate();
-            updateDate(v,currentPos,currentDate);
+        } else if (v.getId() == R.id.textViewDate) {
+            int currentPos = historyItemsArrayList.get(position).getId();
+            String currentDate = historyItemsArrayList.get(position).getDate();
+            updateDate(v, currentPos, currentDate);
         }
     }
-    private void updateDate(View view, int currentpos, String currentDate)
-    {
-        Context context=view.getContext();
+
+    private void updateDate(View view, int currentpos, String currentDate) {
+        Context context = view.getContext();
         // Parse the currentDate string into year, month, and day components
         String[] parts = currentDate.split("/");
         int year = Integer.parseInt(parts[2]);
-        int month = Integer.parseInt(parts[1])-1; // Month index starts from 0, so subtract 1
+        int month = Integer.parseInt(parts[1]) - 1; // Month index starts from 0, so subtract 1
         int day = Integer.parseInt(parts[0]);
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String formattedDate = dayOfMonth + "/" + (month+1) + "/" + year;
-                roomsViewModel.updateDate(formattedDate,currentpos);
+                String formattedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                roomsViewModel.updateDate(formattedDate, currentpos);
             }
-        },year,month,day );
+        }, year, month, day);
         datePickerDialog.show();
     }
-    private void updateName(int position)
-{
-    int itemIdName= historyItemsArrayList.get(position).getId();
-   // sharedViewModel.setPos(itemIdName);
-    Log.v("TAGYS",""+itemIdName);
-    String currentName=historyItemsArrayList.get(position).getName();
-    //Show the alert dialog for updating the name
-    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-    builder.setTitle("Enter new name");
-    // Set up the input for name with old name or current name
-    final EditText input = new EditText(requireContext());
-    input.setText(currentName); // Set the current name as the default text
-    builder.setView(input);
-    // Set up the buttons
-    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            String newName = input.getText().toString();
-            Log.v("TAGYS",""+itemIdName);
-            // Update the name using ViewModel
-            roomsViewModel.updateName(newName, itemIdName);
-          //sharedViewModel.setupdatedName(newName);
 
-        }
-    });
-    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.cancel();
-        }
-    });
-    builder.show();
-}
-private void updateDescription(int position){
-    String currentDesc = historyItemsArrayList.get(position).getDescription();
-    int itemIdDesc = historyItemsArrayList.get(position).getId();
-    Log.d("TAGYS","Id is"+itemIdDesc);
-    //Show the alert dialog for updating the description
-    AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
-    builder1.setTitle("Enter new Description");
-    // Set up the input for name with old name or current name
-    final EditText input1 = new EditText(requireContext());
-    input1.setText(currentDesc); // Set the current name as the default text
-    builder1.setView(input1);
-    //Set Up ok and negative button
-    builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            String newDesc = input1.getText().toString();
-            //Update the desc, using View Model
-            roomsViewModel.updateDesc(newDesc, itemIdDesc);
-        }
-    });
-    builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.cancel();
-        }
-    });
-    builder1.show();
-}
-private void updateImage()
-{
-    historyItemsButtonClickHandlers.onImageButtonClickInViewItems(getView());
-    //Toast.makeText(getContext(),"clicked iamgeview",Toast.LENGTH_SHORT).show();
-}
+    private void updateName(int position) {
+        int itemIdName = historyItemsArrayList.get(position).getId();
+        // sharedViewModel.setPos(itemIdName);
+        Log.v("TAGYS", "" + itemIdName);
+        String currentName = historyItemsArrayList.get(position).getName();
+        //Show the alert dialog for updating the name
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Enter new name");
+        // Set up the input for name with old name or current name
+        final EditText input = new EditText(requireContext());
+        input.setText(currentName); // Set the current name as the default text
+        builder.setView(input);
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newName = input.getText().toString();
+                Log.v("TAGYS", "" + itemIdName);
+                // Update the name using ViewModel
+                roomsViewModel.updateName(newName, itemIdName);
+                //sharedViewModel.setupdatedName(newName);
 
-//    private void loadImageIntoImageView(Uri uri) {
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void updateDescription(int position) {
+        String currentDesc = historyItemsArrayList.get(position).getDescription();
+        int itemIdDesc = historyItemsArrayList.get(position).getId();
+        Log.d("TAGYS", "Id is" + itemIdDesc);
+        //Show the alert dialog for updating the description
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
+        builder1.setTitle("Enter new Description");
+        // Set up the input for name with old name or current name
+        final EditText input1 = new EditText(requireContext());
+        input1.setText(currentDesc); // Set the current name as the default text
+        builder1.setView(input1);
+        //Set Up ok and negative button
+        builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newDesc = input1.getText().toString();
+                //Update the desc, using View Model
+                roomsViewModel.updateDesc(newDesc, itemIdDesc);
+            }
+        });
+        builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder1.show();
+    }
+
+    private void updateImage() {
+        historyItemsButtonClickHandlers.onImageButtonClickInViewItems(getView());
+        //Toast.makeText(getContext(),"clicked iamgeview",Toast.LENGTH_SHORT).show();
+    }
+
+    //    private void loadImageIntoImageView(Uri uri) {
 //        Glide.with(requireContext())
 //                .load(uri)
 //                .apply(new RequestOptions()
@@ -280,19 +273,38 @@ private void updateImage()
 //                        .centerCrop())
 //                .into(historyListItemBinding.imageView);
 //    }
-private void updateImageUri(Uri uri){
-    String url=uri.toString();
-    int id= historyItemsArrayList.get(currentImageUpdatePosition).getId();
-    // Update the URL in the array list
-    historyItemsArrayList.get(currentImageUpdatePosition).setImageUrl(url);
-    recyclerViewAdapterHistoryItems.notifyItemChanged(currentImageUpdatePosition);
-    // Update the URL in the ViewModel
-    roomsViewModel.UpdateImageUrl(url, id);
-    // Load the new image into the ImageView
-    //loadImageIntoImageView(uri);
-}
+    private void updateImageUri(Uri uri) {
+        String url = uri.toString();
+        int id = historyItemsArrayList.get(currentImageUpdatePosition).getId();
+        // Update the URL in the array list
+        historyItemsArrayList.get(currentImageUpdatePosition).setImageUrl(url);
+        recyclerViewAdapterHistoryItems.notifyItemChanged(currentImageUpdatePosition);
+        // Update the URL in the ViewModel
+        roomsViewModel.UpdateImageUrl(url, id);
+        // Load the new image into the ImageView
+        //loadImageIntoImageView(uri);
+    }
 //   We are accessing this method from XMl, fragment_add_history_items and from fragment_view_history_items.
 
+
+    @BindingAdapter({"loadimage"})
+    public static void loadImage(ImageView imageView, String url) {
+
+
+//                Picasso.get()
+//                        .load(placeholderResId)
+//                        .into(imageView);
+//        } else {
+            Glide.with(imageView)
+                    .load(url)
+                  .into(imageView);
+  //              Picasso.get()
+                       //.load(url)
+                   // .into(imageView);
+//
+
+
+    }
 }
        //public int sendPosition()
 //       {
