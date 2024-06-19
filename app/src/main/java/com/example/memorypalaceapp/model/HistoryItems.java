@@ -59,16 +59,12 @@ public class HistoryItems extends BaseObservable
     public void setDescription(String description) {
         this.description = description;
     }
-
-
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-
-
     @Bindable
     public String getImageUrl() {
         return imageUrl;
@@ -76,7 +72,6 @@ public class HistoryItems extends BaseObservable
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
         notifyPropertyChanged(BR.imageUrl);
-
     }
     public String getAudioUrl() {
         return audioUrl;
@@ -84,16 +79,11 @@ public class HistoryItems extends BaseObservable
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
     }
-
-
     public String getDate() {
         return date;
     }
-
-
     public void setDate(String date) {
         this.date = date;
-
     }
     public long getTimeStamp() {
         return timeStamp;
@@ -103,13 +93,9 @@ public class HistoryItems extends BaseObservable
     }
     public HistoryItems()
     {
-
     }
-
-    public HistoryItems(String name){
-
-        this.name=name;
-    }
-
-
+//    public HistoryItems(String name){
+//
+//        this.name=name;
+//    }
 }

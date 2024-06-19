@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp.ui.history;
+package com.example.memorypalaceapp.view.history;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

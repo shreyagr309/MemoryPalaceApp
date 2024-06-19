@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.history.AddHistoryItemsFragment">
+    tools:context=".view.history.AddHistoryItemsFragment">
 
     <data>
         <variable
@@ -10,7 +10,7 @@
             type="com.example.memorypalaceapp.model.HistoryItems" />
         <variable
             name="historyitemclickHandler"
-            type="com.example.memorypalaceapp.ui.history.HistoryItemsButtonClickHandlers" />
+            type="com.example.memorypalaceapp.view.history.HistoryItemsButtonClickHandlers" />
 
             <variable
                 name="sharedviewmodel"
@@ -112,7 +112,6 @@
                     android:textSize="16sp"
                     android:layout_marginStart="150sp"
                     android:textStyle="bold" />
-
                 <TextView
                     android:id="@+id/tvSelectedAudio"
                     android:layout_width="wrap_content"
@@ -121,7 +120,6 @@
                     android:textSize="16sp"
                     android:layout_marginStart="150sp"
                     android:textStyle="bold" />
-
                 <Button
                     android:id="@+id/btnSelectDate"
                     android:layout_width="wrap_content"
@@ -130,7 +128,6 @@
                     android:onClick="@{historyitemclickHandler::onDateButtonClicked}"
                     android:layout_marginStart="100sp"
                     android:layout_marginTop="20sp" />
-
                 <TextView
                     android:id="@+id/tvSelectedDate"
                     android:layout_width="wrap_content"
@@ -140,7 +137,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="150sp"
                     android:text="@{historyitemclickHandler.selectedDate}" />
-
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

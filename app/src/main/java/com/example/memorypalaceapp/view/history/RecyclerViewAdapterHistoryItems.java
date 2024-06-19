@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp.ui.history;
+package com.example.memorypalaceapp.view.history;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +46,7 @@ public class RecyclerViewAdapterHistoryItems extends RecyclerView.Adapter<Recycl
         //Get the current items at their respective position in the adapter
      HistoryItems currentHistoryItem=historyItems.get(position);
      holder.historyListItemBinding.setHistoryitems(currentHistoryItem);
-
-        //Setting up the icons
+     //Setting up the icons
         // Set the icon programmatically
      // icon_name = holder.itemView.getContext().getResources().getDrawable(R.drawable.baseline_add_box_24);
       //holder.historyListItemBinding.textViewName.setCompoundDrawablesWithIntrinsicBounds(icon_name, null, null, null);

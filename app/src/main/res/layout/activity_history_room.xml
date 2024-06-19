@@ -8,7 +8,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".ui.history.HistoryRoomActivity"
+        tools:context=".view.history.HistoryRoomActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/historyimage">

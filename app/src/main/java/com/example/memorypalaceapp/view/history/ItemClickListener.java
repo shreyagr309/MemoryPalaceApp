@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp.ui.history;
+package com.example.memorypalaceapp.view.history;
 import android.view.View;
 //We need to implement this listener in MyViewHolder
 public interface ItemClickListener

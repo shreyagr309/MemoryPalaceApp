@@ -1,7 +1,6 @@
-package com.example.memorypalaceapp.ui.history;
+package com.example.memorypalaceapp.view.history;
 import static android.app.Activity.RESULT_OK;
 import android.content.Intent;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResult;
@@ -17,22 +16,16 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentAddHistoryItemsBinding;
-import com.example.memorypalaceapp.databinding.HistoryListItemBinding;
 import com.example.memorypalaceapp.model.HistoryItems;
 import com.example.memorypalaceapp.viewmodel.RoomsViewModel;
 import com.example.memorypalaceapp.viewmodel.SharedViewModel;
 import com.github.drjacky.imagepicker.ImagePicker;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class AddHistoryItemsFragment extends Fragment
 {

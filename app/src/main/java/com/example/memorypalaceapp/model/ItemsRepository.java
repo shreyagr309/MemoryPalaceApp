@@ -17,7 +17,6 @@ import com.example.memorypalaceapp.model.RoomsDatabase;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class ItemsRepository
 {
     //We also need to create the executor out of Executor Service,
@@ -26,16 +25,13 @@ public class ItemsRepository
     private ExecutorService executor;
     Handler handler;
     private final HistoryItemsDAO historyItemsDAO;//DAO available
-
     // Create the constructor to initialize the above variables.
     //inside (), we are passing application, because in order to use the function getInstance(),
     // We need to pass context, and Application is a sub class of context
     public ItemsRepository(Application application)
     {
         //Get the instance of the database, and initialize the historyItemsDAO
-
       RoomsDatabase roomsDatabase= RoomsDatabase.getInstance(application); //Data Source(Rooms database)
-
       this.historyItemsDAO= roomsDatabase.historyItemsDAO();
 
       //new Single thread is best for sequential task execution without overlap.
@@ -44,12 +40,9 @@ public class ItemsRepository
         //this will improve the responsiveness of the app
         executor=Executors.newFixedThreadPool(numberofThreads);//We can not make database operations to run on the main thread
         handler=new Handler(Looper.getMainLooper());
-
     }
-
     //Create functions for performing the database operations
     //Methods in DAO, being executed from Repository
-
     public void addHistoryItems(HistoryItems historyItems)
     {
         // runnable interface, will run the task on the separated thread.
@@ -77,7 +70,6 @@ public class ItemsRepository
     public LiveData<List<String>> getAllnames()
     {
         return historyItemsDAO.getAllNames();
-
     }
     public LiveData<List<String>> getAlldescriptions()
     {
@@ -145,8 +137,6 @@ public class ItemsRepository
             }
         });
     }
-
-
     public void  updateImageUrl(String imageUrl,int id)
     {
         executor.execute(new Runnable() {
@@ -178,15 +168,12 @@ public class ItemsRepository
     }
     public void updateTimeStamp(long timestamp,int id)
     {
-
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 historyItemsDAO.updateTimeStamp(timestamp,id);
             }
         });
-
-
     }
 //    public void deleteItem(int id)
 //    {
@@ -200,5 +187,4 @@ public class ItemsRepository
 //
 //
 //    }
-
 }

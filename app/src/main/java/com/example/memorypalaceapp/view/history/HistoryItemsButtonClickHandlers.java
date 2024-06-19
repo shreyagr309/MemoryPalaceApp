@@ -1,4 +1,4 @@
-package com.example.memorypalaceapp.ui.history;
+package com.example.memorypalaceapp.view.history;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -87,11 +87,9 @@ public class HistoryItemsButtonClickHandlers extends BaseObservable
 
 
     }
-
     public void onAudioButtonClick(View view) {
 
     }
-
     public void OnSaveButtonClicked(View view) {
         if (historyItems.getName() == null || historyItems.getDescription() == null ||historyItems.getImageUrl()==null
                 ||historyItems.getDate()==null) {

@@ -1,44 +1,25 @@
-package com.example.memorypalaceapp.ui;
+package com.example.memorypalaceapp.view;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.ActivityMainBinding;
-import com.example.memorypalaceapp.ui.history.HistoryRoomActivity;
-
-public class MainActivity extends AppCompatActivity {
+import com.example.memorypalaceapp.view.history.HistoryRoomActivity;
+public class MainActivity extends AppCompatActivity
+{
     private static final int REQUEST_STORAGE_PERMISSION = 1; // Request code for permission
     private SharedPreferences sharedPreferences;
     private ActivityMainBinding activityMainBinding;
     private static final String Key_History_Room_Created = "History_Room_Created"; // Key for storing the value of history room created
     private boolean historyRoomCreated;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             activityMainBinding.buttonHistoryroom.setText("Create History room");
         }
-
         activityMainBinding.buttonHistoryroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 //    private boolean checkPermission() {
 //
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -113,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 //            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
 //        }
 //    }
-
     private void createHistoryRoom() {
         // Perform actions to create history room (like going to History room activity)
         // Once created, update shared preferences
@@ -125,12 +103,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Success, please create and add your items", Toast.LENGTH_SHORT).show();
         startHistoryRoomActivity();
     }
-
     private void startHistoryRoomActivity() {
         Intent historyRoomIntent = new Intent(MainActivity.this, HistoryRoomActivity.class);
         startActivity(historyRoomIntent);
     }
-
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -173,6 +149,4 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //
 //    );
-
-
 }

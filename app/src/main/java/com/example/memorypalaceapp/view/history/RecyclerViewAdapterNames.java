@@ -1,7 +1,6 @@
-package com.example.memorypalaceapp.ui.history;
+package com.example.memorypalaceapp.view.history;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memorypalaceapp.R;
 import com.example.memorypalaceapp.databinding.FragmentListNamesBinding;
-import com.example.memorypalaceapp.model.HistoryItems;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapterNames extends RecyclerView.Adapter<RecyclerViewAdapterNames.NamesViewHolder>

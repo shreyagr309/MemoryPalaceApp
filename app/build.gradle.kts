@@ -61,5 +61,6 @@ dependencies {
     val libVersion= "2.3.22"
     implementation ("com.github.Drjacky:ImagePicker:$libVersion")
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("it.xabaras.android:recyclerview-swipedecorator:1.2")
 
 }

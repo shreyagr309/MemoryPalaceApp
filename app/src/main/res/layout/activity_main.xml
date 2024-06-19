@@ -5,12 +5,12 @@
 <data>
     <variable
         name="mainactivity"
-        type="com.example.memorypalaceapp.ui.MainActivity" />
+        type="com.example.memorypalaceapp.view.MainActivity" />
 </data>
 <androidx.constraintlayout.widget.ConstraintLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity"
+    tools:context=".view.MainActivity"
     android:background="@drawable/mainimage">
     <TextView
         android:id="@+id/textView"
