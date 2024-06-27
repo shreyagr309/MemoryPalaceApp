@@ -119,13 +119,14 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
                     fragmentViewHistoryItemsBinding.emptyView.setVisibility(View.GONE);
                     historyItemsArrayList.addAll(historyItems);
                     recyclerViewAdapterHistoryItems.notifyDataSetChanged();
+                }
 //                for(HistoryItems hi:historyItems){
 //
 //                    Log.v("TAGYS",""+hi.getName());
 //                    historyItemsArrayList.add(hi);
 //                }
 //                recyclerViewAdapter.notifyDataSetChanged();
-                }
+
 
 //                AppCompatActivity activity = (AppCompatActivity) requireActivity();
 //                if (activity != null) {
@@ -135,22 +136,17 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
 //                        viewNamesFragment.notifyItemDeleted(deletedItem); // Call method
 //                    }
 //                }
-
-
             }
         });
-
         recyclerViewAdapterHistoryItems.setHistoryItems(historyItemsArrayList);
         recyclerView.setAdapter(recyclerViewAdapterHistoryItems);
         recyclerViewAdapterHistoryItems.setItemClickListener(this);
-
         // Adding Swipe to delete functionality
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
             {
@@ -164,7 +160,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
                 // Notify ViewNames fragment of the deletion
                 sharedViewModel.setDeletedItem(deletedItem);
 //                Toast.makeText(getContext(), "Items deleted", Toast.LENGTH_SHORT).show();
-
                 //Added SnackBar, if the items deleted and added functionality for undo.
                 Snackbar.make(view, "Item deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO", new View.OnClickListener() {
@@ -176,13 +171,9 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
                             }
                         }).show();
             }
-
-
-
             // Find ViewNames fragment directly from the Activity (assuming it's added directly)
         }).attachToRecyclerView(recyclerView);
     }
-
     //onClick method of the Interface ItemClickListener
     @Override
     public void onCLick(View v, int position) {
@@ -200,7 +191,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
             updateDate(v, currentPos, currentDate);
         }
     }
-
     private void updateDate(View view, int currentpos, String currentDate) {
         Context context = view.getContext();
         // Parse the currentDate string into year, month, and day components
@@ -217,7 +207,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         }, year, month, day);
         datePickerDialog.show();
     }
-
     private void updateName(int position) {
         int itemIdName = historyItemsArrayList.get(position).getId();
         // sharedViewModel.setPos(itemIdName);
@@ -250,7 +239,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         });
         builder.show();
     }
-
     private void updateDescription(int position) {
         String currentDesc = historyItemsArrayList.get(position).getDescription();
         int itemIdDesc = historyItemsArrayList.get(position).getId();
@@ -279,12 +267,10 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         });
         builder1.show();
     }
-
     private void updateImage() {
         historyItemsButtonClickHandlers.onImageButtonClickInViewItems(getView());
         //Toast.makeText(getContext(),"clicked iamgeview",Toast.LENGTH_SHORT).show();
     }
-
     //    private void loadImageIntoImageView(Uri uri) {
 //        Glide.with(requireContext())
 //                .load(uri)
@@ -306,12 +292,8 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
         //loadImageIntoImageView(uri);
     }
 //   We are accessing this method from XMl, fragment_add_history_items and from fragment_view_history_items.
-
-
     @BindingAdapter({"loadimage"})
     public static void loadImage(ImageView imageView, String url) {
-
-
 //                Picasso.get()
 //                        .load(placeholderResId)
 //                        .into(imageView);
@@ -323,8 +305,6 @@ public class ViewHistoryItemsFragment extends Fragment implements ItemClickListe
                        //.load(url)
                    // .into(imageView);
 //
-
-
     }
 }
        //public int sendPosition()
